@@ -1,5 +1,6 @@
 package org.jacobvv.libsamples.databus;
 
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 
 /**
@@ -8,39 +9,47 @@ import android.support.annotation.Nullable;
  */
 public abstract class Observer<T> {
 
-    public static final int STATE_DESTROYED = 0;
-    public static final int STATE_INITIALIZED = 1;
-    public static final int STATE_CREATED = 2;
-    public static final int STATE_STARTED = 3;
-    public static final int STATE_RESUMED = 4;
+    @SuppressWarnings("WeakerAccess")
+    public static final int STATE_INITIALIZED = 0;
+    @SuppressWarnings("WeakerAccess")
+    public static final int STATE_CREATED = 1;
+    @SuppressWarnings("WeakerAccess")
+    public static final int STATE_STARTED = 2;
+    @SuppressWarnings("WeakerAccess")
+    public static final int STATE_RESUMED = 3;
 
     private int mState = STATE_INITIALIZED;
     private int mLevel = STATE_STARTED;
-    private boolean isSticky = false;
 
-    void setState(int state) {
+    /**
+     * 设置Observer的状态
+     * @param state 具体状态
+     * @return 如果Observer的活跃发生变化，则返回True
+     */
+    boolean setState(int state) {
+        boolean isActive = isActive();
         this.mState = state;
+        return isActive() ^ isActive;
     }
 
     void setLevel(int level) {
         this.mLevel = level;
     }
 
-    void setSticky() {
-        this.isSticky = true;
-    }
-
+    /**
+     * 判断该观察者是否处于活跃状态，如果当前状态等级高于设定的活跃等级及认定为活跃
+     *
+     * @return 观察者是否处于活跃状态
+     */
     boolean isActive() {
         return mState >= mLevel;
     }
 
-    boolean isSticky() {
-        return isSticky;
-    }
-
     /**
-     * Called when the data is changed.
-     * @param t  The new data
+     * 接收事件的消息回调，只会在主线程中触发
+     *
+     * @param t 事件数据
      */
+    @MainThread
     protected abstract void onChanged(@Nullable T t);
 }

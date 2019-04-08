@@ -19,6 +19,12 @@ public class LifeFragment extends Fragment {
     private Lifecycle mCallback;
     private int mActivityHash;
 
+    /**
+     * 通过添加无UI的Fragment的方式，对Activity绑定生命周期回调
+     *
+     * @param activity 需要绑定生命周期的Activity
+     * @param callback 生命周期回调
+     */
     static void inject(Activity activity, Lifecycle callback) {
         FragmentManager manager = activity.getFragmentManager();
         LifeFragment fragment = (LifeFragment) manager.findFragmentByTag(REPORT_FRAGMENT_TAG);

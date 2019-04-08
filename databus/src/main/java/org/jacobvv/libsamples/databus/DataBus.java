@@ -22,19 +22,19 @@ public class DataBus {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> Observable<T> with(String key, @SuppressWarnings("unused") Class<T> clazz) {
-        if (!Holder.INSTANCE.bus.containsKey(key)) {
+    public static <T> Observable<T> with(String tag, @SuppressWarnings("unused") Class<T> clazz) {
+        if (!Holder.INSTANCE.bus.containsKey(tag)) {
             synchronized (Holder.INSTANCE) {
-                if (!Holder.INSTANCE.bus.containsKey(key)) {
-                    Holder.INSTANCE.bus.put(key, new DataChannel());
+                if (!Holder.INSTANCE.bus.containsKey(tag)) {
+                    Holder.INSTANCE.bus.put(tag, new DataChannel());
                 }
             }
         }
-        return (Observable<T>) Holder.INSTANCE.bus.get(key);
+        return (Observable<T>) Holder.INSTANCE.bus.get(tag);
     }
 
-    public static Observable<Object> with(String key) {
-        return with(key, null);
+    public static Observable<Object> with(String tag) {
+        return with(tag, null);
     }
 
 }
