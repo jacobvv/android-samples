@@ -9,17 +9,8 @@ import android.support.annotation.Nullable;
  */
 public abstract class Observer<T> {
 
-    @SuppressWarnings("WeakerAccess")
-    public static final int STATE_INITIALIZED = 0;
-    @SuppressWarnings("WeakerAccess")
-    public static final int STATE_CREATED = 1;
-    @SuppressWarnings("WeakerAccess")
-    public static final int STATE_STARTED = 2;
-    @SuppressWarnings("WeakerAccess")
-    public static final int STATE_RESUMED = 3;
-
-    private int mState = STATE_INITIALIZED;
-    private int mLevel = STATE_STARTED;
+    private int mState = Lifecycle.STATE_INITIALIZED;
+    private int mLevel = Lifecycle.STATE_STARTED;
 
     /**
      * 设置Observer的状态
@@ -29,7 +20,7 @@ public abstract class Observer<T> {
     boolean setState(int state) {
         boolean isActive = isActive();
         this.mState = state;
-        return isActive() ^ isActive;
+        return !isActive && isActive();
     }
 
     void setLevel(int level) {

@@ -13,7 +13,7 @@ public interface Observable<T> {
      * 注册一个事件Observer，绑定Activity生命周期，即只在Activity活跃时接收到事件，
      * 当Activity处于非活跃状态时，发送的事件将会保存，直到Activity重新活跃时触发。
      * 当Activity销毁时，注册的Observer将会自动注销
-     * 默认事件等级为{@link Observer#STATE_STARTED}
+     * 默认事件等级为{@link Lifecycle#STATE_STARTED}
      * <p>
      * 注意：当有其他的粘性Observer注册到同一个通道tag时，将会消费掉所有该tag保存的事件，
      * 此时再有Activity恢复活跃状态，对应tag的Observer将不会有任何事件触发。
@@ -35,7 +35,7 @@ public interface Observable<T> {
     /**
      * 注册一个事件Observer，与{@link #observe(Activity, Observer)}类似
      * 支持粘性事件，当Observer还未注册时发送的事件，在Observer使用该方法注册后将触发事件
-     * 默认事件等级为{@link Observer#STATE_STARTED}
+     * 默认事件等级为{@link Lifecycle#STATE_STARTED}
      *
      * 注意：该方法注册Observer时会消费掉所有已保存的待触发事件，
      * 其中也包括因为Activity不在活跃状态从而保存的，用以在Activity活跃后触发的事件。
@@ -95,5 +95,13 @@ public interface Observable<T> {
      * @param delay 延迟毫秒数
      */
     void postDelay(T value, long delay);
+
+    /**
+     * 生命周期回调，更改状态
+     *
+     * @param hash  Activity的hashcode
+     * @param state Observer状态，参考Lifecycle接口的状态定义
+     */
+    void onStateChange(int hash, int state);
 
 }

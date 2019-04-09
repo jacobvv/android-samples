@@ -5,7 +5,13 @@ package org.jacobvv.libsamples.databus;
  * @author jacob
  * @date 19-3-29
  */
-public interface Lifecycle {
+interface Lifecycle {
+
+    int STATE_DESTROYED = -1;
+    int STATE_INITIALIZED = 0;
+    int STATE_CREATED = 1;
+    int STATE_STARTED = 2;
+    int STATE_RESUMED = 3;
 
     /**
      * 对应Activity的onCreate

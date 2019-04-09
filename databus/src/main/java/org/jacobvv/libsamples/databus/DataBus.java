@@ -13,6 +13,8 @@ public class DataBus {
 
     private volatile Map<String, Observable<Object>> bus;
 
+    private Lifecycle lifecycle = new LifecycleImpl();
+
     private DataBus() {
         bus = new HashMap<>();
     }
@@ -35,6 +37,55 @@ public class DataBus {
 
     public static Observable<Object> with(String tag) {
         return with(tag, null);
+    }
+
+    static Lifecycle getLifecycle() {
+        return Holder.INSTANCE.lifecycle;
+    }
+
+    private static class LifecycleImpl implements Lifecycle {
+
+        @Override
+        public void onCreate(int hash) {
+            for (Observable<Object> channels : Holder.INSTANCE.bus.values()) {
+                channels.onStateChange(hash, Lifecycle.STATE_CREATED);
+            }
+        }
+
+        @Override
+        public void onStart(int hash) {
+            for (Observable<Object> channels : Holder.INSTANCE.bus.values()) {
+                channels.onStateChange(hash, Lifecycle.STATE_STARTED);
+            }
+        }
+
+        @Override
+        public void onResume(int hash) {
+            for (Observable<Object> channels : Holder.INSTANCE.bus.values()) {
+                channels.onStateChange(hash, Lifecycle.STATE_RESUMED);
+            }
+        }
+
+        @Override
+        public void onPause(int hash) {
+            for (Observable<Object> channels : Holder.INSTANCE.bus.values()) {
+                channels.onStateChange(hash, Lifecycle.STATE_STARTED);
+            }
+        }
+
+        @Override
+        public void onStop(int hash) {
+            for (Observable<Object> channels : Holder.INSTANCE.bus.values()) {
+                channels.onStateChange(hash, Lifecycle.STATE_CREATED);
+            }
+        }
+
+        @Override
+        public void onDestroy(int hash) {
+            for (Observable<Object> channels : Holder.INSTANCE.bus.values()) {
+                channels.onStateChange(hash, Lifecycle.STATE_DESTROYED);
+            }
+        }
     }
 
 }

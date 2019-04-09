@@ -21,8 +21,6 @@ public class DataChannel<T> implements Observable<T> {
     private SparseArray<LinkedList<Observer<T>>> mChannels;
     private SparseArray<LinkedList<T>> mPendingMessages;
 
-    private Lifecycle mLifecycle = new LifecycleImpl();
-
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     DataChannel() {
@@ -32,7 +30,7 @@ public class DataChannel<T> implements Observable<T> {
 
     @Override
     public void observe(@NonNull final Activity activity, @NonNull final Observer<T> observer) {
-        observe(activity, Observer.STATE_STARTED, observer);
+        observe(activity, Lifecycle.STATE_STARTED, observer);
     }
 
     @Override
@@ -53,13 +51,12 @@ public class DataChannel<T> implements Observable<T> {
 
     @Override
     public void observeSticky(@NonNull Activity activity, @NonNull Observer<T> observer) {
-        observeSticky(activity, Observer.STATE_STARTED, observer);
+        observeSticky(activity, Lifecycle.STATE_STARTED, observer);
     }
 
     @Override
     public void observeSticky(@NonNull final Activity activity, int level,
                               @NonNull final Observer<T> observer) {
-        observe(activity, level, observer);
         observer.setLevel(level);
         if (Looper.myLooper() == Looper.getMainLooper()) {
             observeInternal(activity, observer, true);
@@ -121,7 +118,7 @@ public class DataChannel<T> implements Observable<T> {
         int hash = activity.hashCode();
         if (mChannels.get(hash) == null) {
             mChannels.put(hash, new LinkedList<Observer<T>>());
-            LifeFragment.inject(activity, mLifecycle);
+            LifeFragment.inject(activity, DataBus.getLifecycle());
         }
         LinkedList<Observer<T>> observers = mChannels.get(hash);
         observers.add(observer);
@@ -155,30 +152,40 @@ public class DataChannel<T> implements Observable<T> {
 
     @Override
     public void post(T value) {
+        boolean noObserver = true;
         for (int i = mChannels.size() - 1; i >= 0; i--) {
             int hash = mChannels.keyAt(i);
-            // 当前是否有Observer处于非活跃状态，则事件需要存储以备后续Observer活跃后触发
-            boolean needRestore = false;
-            // 当前是否还未注册Observer，则事件需要存储以备后续粘性触发
-            boolean noObserver = true;
+            boolean observerUnactivated = false;
             LinkedList<Observer<T>> observers = mChannels.valueAt(i);
             for (Observer<T> observer : observers) {
                 noObserver = false;
                 if (hash == 0 || observer.isActive()) {
                     setValue(observer, value);
                 } else {
-                    needRestore = true;
+                    observerUnactivated = true;
                 }
             }
-            if (noObserver || needRestore) {
-                // 将需要保存的事件放入集合存储
+            if (observerUnactivated) {
+                // 此时有相关Observer不活跃，缓存该事件，以供后续Observer活跃时触发
                 synchronized (this) {
                     LinkedList<T> eventList = mPendingMessages.get(hash);
                     if (eventList == null) {
                         eventList = new LinkedList<>();
+                        mPendingMessages.put(hash, eventList);
                     }
                     eventList.add(value);
                 }
+            }
+        }
+        if (noObserver) {
+            // 此时还未有相关Observer注册，缓存该事件，以供后续粘性Observer触发
+            synchronized (this) {
+                LinkedList<T> eventList = mPendingMessages.get(0);
+                if (eventList == null) {
+                    eventList = new LinkedList<>();
+                    mPendingMessages.put(0, eventList);
+                }
+                eventList.add(value);
             }
         }
     }
@@ -241,76 +248,23 @@ public class DataChannel<T> implements Observable<T> {
         mPendingMessages.clear();
     }
 
-    private class LifecycleImpl implements Lifecycle {
-
-        @Override
-        public void onCreate(int hash) {
-            LinkedList<Observer<T>> observers = mChannels.get(hash);
-            if (observers != null && !observers.isEmpty()) {
-                for (Observer<T> observer : observers) {
-                    boolean activeChanged = observer.setState(Observer.STATE_CREATED);
-                    // 如果Observer变成活跃状态，则触发对应Activity的待触发事件，并清空列表
-                    if (activeChanged) {
-                        dispatchPendingEvents(hash, observer);
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void onStart(int hash) {
-            LinkedList<Observer<T>> observers = mChannels.get(hash);
-            if (observers != null && !observers.isEmpty()) {
-                for (Observer<T> observer : observers) {
-                    boolean activeChanged = observer.setState(Observer.STATE_STARTED);
-                    // 如果Observer变成活跃状态，则触发对应Activity的待触发事件，并清空列表
-                    if (activeChanged) {
-                        dispatchPendingEvents(hash, observer);
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void onResume(int hash) {
-            LinkedList<Observer<T>> observers = mChannels.get(hash);
-            if (observers != null && !observers.isEmpty()) {
-                for (Observer<T> observer : observers) {
-                    boolean activeChanged = observer.setState(Observer.STATE_RESUMED);
-                    // 如果Observer变成活跃状态，则触发对应Activity的待触发事件，并清空列表
-                    if (activeChanged) {
-                        dispatchPendingEvents(hash, observer);
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void onPause(int hash) {
-            LinkedList<Observer<T>> observers = mChannels.get(hash);
-            if (observers != null && !observers.isEmpty()) {
-                for (Observer<T> observer : observers) {
-                    observer.setState(Observer.STATE_STARTED);
-                }
-            }
-        }
-
-        @Override
-        public void onStop(int hash) {
-            LinkedList<Observer<T>> observers = mChannels.get(hash);
-            if (observers != null && !observers.isEmpty()) {
-                for (Observer<T> observer : observers) {
-                    observer.setState(Observer.STATE_CREATED);
-                }
-            }
-        }
-
-        @Override
-        public void onDestroy(int hash) {
-            LinkedList<Observer<T>> observers = mChannels.get(hash);
+    @Override
+    public void onStateChange(int hash, int state) {
+        LinkedList<Observer<T>> observers = mChannels.get(hash);
+        if (state == Lifecycle.STATE_DESTROYED) {
+            // 如果Activity被销毁，则移除所有相关的Observer
             mChannels.remove(hash);
             if (observers != null) {
                 observers.clear();
+            }
+        } else if (observers != null && !observers.isEmpty()) {
+            // 如果Activity状态发生变化，则将状态设置到所有相关的Observer中，
+            // 并根据活跃状况，触发缓存的事件
+            for (Observer<T> observer : observers) {
+                boolean activeChanged = observer.setState(state);
+                if (activeChanged) {
+                    dispatchPendingEvents(hash, observer);
+                }
             }
         }
     }

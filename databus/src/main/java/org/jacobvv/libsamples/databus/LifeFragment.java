@@ -41,7 +41,7 @@ public class LifeFragment extends Fragment {
         this.mCallback = callback;
     }
 
-    public void setActivityHash(int hash) {
+    private void setActivityHash(int hash) {
         this.mActivityHash = hash;
     }
 
