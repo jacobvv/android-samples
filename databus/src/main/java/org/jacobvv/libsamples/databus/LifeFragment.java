@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 
 /**
  * @author jacob
- * @date 19-4-5
+ * @since 19-4-5
  */
 public class LifeFragment extends Fragment {
 

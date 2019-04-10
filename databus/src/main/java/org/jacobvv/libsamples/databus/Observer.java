@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 /**
  * @author jacob
- * @date 19-4-5
+ * @since 19-4-5
  */
 public abstract class Observer<T> {
 

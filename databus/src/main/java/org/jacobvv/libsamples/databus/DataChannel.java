@@ -14,7 +14,7 @@ import java.util.LinkedList;
  * 能够根据Activity的生命周期，动态释放数据通道，并能够实现粘性消息
  *
  * @author jacob
- * @date 19-4-5
+ * @since 19-4-5
  */
 public class DataChannel<T> implements Observable<T> {
 

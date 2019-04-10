@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 /**
  * @author jacob
- * @date 19-3-29
+ * @since 19-3-29
  */
 public interface Observable<T> {
 
