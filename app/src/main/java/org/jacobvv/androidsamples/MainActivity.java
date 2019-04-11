@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.jacobvv.androidsamples.databus.ActivityA;
+import org.jacobvv.androidsamples.recycler.RecyclerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         mItems.add("DataBus Sample");
+        mItems.add("BaseRecyclerView Sample");
 
         ListView listView = findViewById(R.id.lv_list);
         listView.setAdapter(new ArrayAdapter<>(this,
@@ -40,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 i.setClass(this, ActivityA.class);
                 startActivity(i);
                 break;
+            case 1:
+                i.setClass(this, RecyclerActivity.class);
+                startActivity(i);
             default:
         }
     }
