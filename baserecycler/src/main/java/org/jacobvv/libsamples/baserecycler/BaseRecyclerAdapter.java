@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Common base class of common implementation for an {@link RecyclerView.Adapter Adapter}
  * that can be used in {@link RecyclerView RecyclerView}.
@@ -14,40 +17,43 @@ import android.view.ViewGroup;
  * @author Jacob
  * @since 17-12-22
  */
-public abstract class BaseRecyclerAdapter<T extends BaseItemModel>
+public class BaseRecyclerAdapter<T>
         extends RecyclerView.Adapter<BaseRecyclerViewHolder<T>> {
 
-    private BaseTypeFactory<T> mTypeFactory;
+    private List<T> items;
+    private TypePool typePool;
 
-    protected BaseRecyclerAdapter(BaseTypeFactory<T> factory) {
-        mTypeFactory = factory;
+    public BaseRecyclerAdapter() {
+        this.items = new ArrayList<>();
+        this.typePool = new TypePool();
     }
 
     @NonNull
     @Override
     public BaseRecyclerViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        int layoutId = mTypeFactory.getLayoutId(viewType);
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutId, null);
-        return mTypeFactory.createViewHolder(viewType, itemView);
+        ItemType type = typePool.getType(viewType);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(type.getLayoutId(viewType), null);
+        return type.createViewHolder(viewType, view);
     }
 
     @Override
-    public void onBindViewHolder(BaseRecyclerViewHolder<T> holder, int position) {
-        T model = getItem(position);
-        holder.setModel(model, position);
-        holder.setUpView(model, position);
+    public void onBindViewHolder(@NonNull BaseRecyclerViewHolder<T> holder, int position) {
+        holder.setUpView(items.get(position), position);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return getItem(position).getType();
+        return typePool.getIndexOfType(items.get(position).getClass());
     }
 
-    /**
-     * Get item model of given position.
-     *
-     * @param pos position of request model.
-     * @return item model of given position.
-     */
-    protected abstract T getItem(int pos);
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public void register(@NonNull Class<? extends T> clazz, @NonNull ItemType itemType) {
+        typePool.register(clazz, itemType);
+    }
+
 }
