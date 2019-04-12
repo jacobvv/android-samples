@@ -15,7 +15,7 @@ import java.util.List;
  * <p>
  *
  * @author Jacob
- * @since 17-12-22
+ * @date 17-12-22
  */
 public class BaseRecyclerAdapter<T>
         extends RecyclerView.Adapter<BaseRecyclerViewHolder<T>> {

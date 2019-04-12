@@ -14,7 +14,7 @@ import android.view.View;
  * 4. Interface of item type.
  *
  * @author Jacob
- * @since 17-12-23
+ * @date 17-12-23
  */
 public abstract class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
 

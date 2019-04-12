@@ -3,7 +3,7 @@ package org.jacobvv.libsamples.databus;
 /**
  * 生命周期回调接口
  * @author jacob
- * @since 19-3-29
+ * @date 19-3-29
  */
 interface Lifecycle {
 

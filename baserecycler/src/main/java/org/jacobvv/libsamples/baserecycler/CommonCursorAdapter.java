@@ -9,7 +9,7 @@
 //
 ///**
 // * @author Jacob
-// * @since 18-4-3
+// * @date 18-4-3
 // */
 //public class CommonCursorAdapter<T extends BaseItemModel> extends BaseRecyclerAdapter<T> {
 //

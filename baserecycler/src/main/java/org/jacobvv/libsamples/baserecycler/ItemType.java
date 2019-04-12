@@ -5,7 +5,7 @@ import android.view.View;
 
 /**
  * @author jacob
- * @since 19-4-13
+ * @date 19-4-13
  */
 public interface ItemType {
 
