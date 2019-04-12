@@ -11,6 +11,7 @@ public class TypePool implements ITypePool {
 
     private final List<Class<?>> classes;
     private final List<ItemType> types;
+    private boolean isMultiType = true;
 
     public TypePool() {
         this.classes = new ArrayList<>();
@@ -18,14 +19,21 @@ public class TypePool implements ITypePool {
     }
 
     @Override
-    public void register(Class<?> itemClass, ItemType itemType) {
-        classes.add(itemClass);
+    public void register(ItemType itemType) {
+        if (!types.isEmpty()) {
+            throw new RuntimeException();
+        }
+        isMultiType = false;
         types.add(itemType);
     }
 
     @Override
-    public int size() {
-        return types.size();
+    public void register(Class<?> itemClass, ItemType itemType) {
+        if (!isMultiType) {
+            throw new RuntimeException();
+        }
+        classes.add(itemClass);
+        types.add(itemType);
     }
 
     @Override
@@ -34,12 +42,11 @@ public class TypePool implements ITypePool {
     }
 
     @Override
-    public ItemType getType(Class<?> itemClass) {
-        return types.get(classes.indexOf(itemClass));
-    }
-
-    @Override
     public int getIndexOfType(Class<?> itemClass) {
-        return classes.indexOf(itemClass);
+        if (isMultiType) {
+            return classes.indexOf(itemClass);
+        } else {
+            return 0;
+        }
     }
 }

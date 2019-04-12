@@ -6,13 +6,11 @@ package org.jacobvv.libsamples.baserecycler;
  */
 public interface ITypePool {
 
+    void register(ItemType itemType);
+
     void register(Class<?> itemClass, ItemType itemType);
 
-    int size();
-
     ItemType getType(int viewType);
-
-    ItemType getType(Class<?> itemClass);
 
     int getIndexOfType(Class<?> itemClass);
 }

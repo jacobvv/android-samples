@@ -52,6 +52,10 @@ public class BaseRecyclerAdapter<T>
         return items.size();
     }
 
+    public void register(@NonNull ItemType itemType) {
+        typePool.register(itemType);
+    }
+
     public void register(@NonNull Class<? extends T> clazz, @NonNull ItemType itemType) {
         typePool.register(clazz, itemType);
     }
