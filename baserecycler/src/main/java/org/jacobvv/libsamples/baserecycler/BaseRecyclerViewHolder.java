@@ -1,8 +1,14 @@
 package org.jacobvv.libsamples.baserecycler;
 
+import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
+
+import org.jacobvv.libsamples.baserecycler.listener.OnItemClickListener;
+import org.jacobvv.libsamples.baserecycler.listener.OnItemLongClickListener;
+import org.jacobvv.libsamples.baserecycler.listener.OnViewClickListener;
+import org.jacobvv.libsamples.baserecycler.listener.OnViewLongClickListener;
 
 /**
  * Base view holder for {@link RecyclerView RecyclerView}.
@@ -15,12 +21,22 @@ import android.view.View;
  * @author Jacob
  * @date 17-12-23
  */
-public abstract class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
+public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
 
+    private BaseRecyclerAdapter<T> mAdapter;
+    private ItemType<T> mType;
     private SparseArray<View> mViews = new SparseArray<>();
+    private T mItem;
 
-    public BaseRecyclerViewHolder(View itemView) {
+    BaseRecyclerViewHolder(BaseRecyclerAdapter<T> adapter, View itemView, ItemType<T> type) {
         super(itemView);
+        this.mType = type;
+        this.mAdapter = adapter;
+    }
+
+    void setup(T item, int position) {
+        this.mItem = item;
+        mType.setupView(this, item, position);
     }
 
     @SuppressWarnings("unchecked")
@@ -36,12 +52,56 @@ public abstract class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder 
         return (V) view;
     }
 
-    /**
-     * Set up views by item model.
-     *
-     * @param model    model of item.
-     * @param position position of list in adapter.
-     */
-    public abstract void setUpView(T model, int position);
+    public ItemType<T> getType() {
+        return mType;
+    }
+
+    public void setOnItemClickListener(final OnItemClickListener<T> l) {
+        if (l != null) {
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    l.onClick(mAdapter, BaseRecyclerViewHolder.this, mItem,
+                            getAdapterPosition());
+                }
+            });
+        }
+    }
+
+    public void setOnItemLongClickListener(final OnItemLongClickListener<T> l) {
+        if (l != null) {
+            this.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return l.onLongClick(mAdapter, BaseRecyclerViewHolder.this, mItem,
+                            getAdapterPosition());
+                }
+            });
+        }
+    }
+
+    public void addOnClickListener(@IdRes int id, final OnViewClickListener<T> l) {
+        if (l != null) {
+            getView(id).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    l.onClick(mAdapter, BaseRecyclerViewHolder.this, v, mItem,
+                            getAdapterPosition());
+                }
+            });
+        }
+    }
+
+    public void addOnLongClickListener(@IdRes int id, final OnViewLongClickListener<T> l) {
+        if (l != null) {
+            getView(id).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return l.onLongClick(mAdapter, BaseRecyclerViewHolder.this, v, mItem,
+                            getAdapterPosition());
+                }
+            });
+        }
+    }
 
 }

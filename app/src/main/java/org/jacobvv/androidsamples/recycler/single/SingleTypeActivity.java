@@ -14,8 +14,10 @@ import android.widget.TextView;
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.androidsamples.recycler.Model;
 import org.jacobvv.libsamples.baserecycler.BaseArrayAdapter;
+import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
 import org.jacobvv.libsamples.baserecycler.BaseRecyclerViewHolder;
 import org.jacobvv.libsamples.baserecycler.ItemType;
+import org.jacobvv.libsamples.baserecycler.listener.OnItemClickListener;
 
 public class SingleTypeActivity extends AppCompatActivity {
 
@@ -51,29 +53,23 @@ public class SingleTypeActivity extends AppCompatActivity {
         }
 
         @Override
-        public BaseRecyclerViewHolder<Model> createViewHolder(int viewType, View view) {
-            view.setOnClickListener(new View.OnClickListener() {
+        public void onCreateViewHolder(BaseRecyclerViewHolder<Model> holder) {
+            holder.setOnItemClickListener(new OnItemClickListener<Model>() {
                 @Override
-                public void onClick(View v) {
-                    Snackbar.make(v, "On click", Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();
+                public void onClick(BaseRecyclerAdapter<Model> adapter,
+                                    BaseRecyclerViewHolder<Model> holder,
+                                    Model model, int position) {
+                    Snackbar.make(holder.itemView, "On click: " + model.title,
+                            Snackbar.LENGTH_SHORT).show();
                 }
             });
-            return new SingleHolder(view);
-        }
-    }
-
-    private class SingleHolder extends BaseRecyclerViewHolder<Model> {
-
-        public SingleHolder(View itemView) {
-            super(itemView);
         }
 
         @Override
-        public void setUpView(Model model, int position) {
-            TextView img = getView(R.id.tv_img);
-            TextView title = getView(R.id.tv_title);
-            TextView content = getView(R.id.tv_content);
+        public void setupView(BaseRecyclerViewHolder<Model> holder, Model model, int position) {
+            TextView img = holder.getView(R.id.tv_img);
+            TextView title = holder.getView(R.id.tv_title);
+            TextView content = holder.getView(R.id.tv_content);
             img.setText(model.img);
             title.setText(model.title);
             content.setText(model.content);

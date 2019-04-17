@@ -29,12 +29,14 @@ public abstract class BaseRecyclerAdapter<T>
         ItemType<T> type = typePool.getType(viewType);
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(type.getLayoutId(viewType), null);
-        return type.createViewHolder(viewType, view);
+        BaseRecyclerViewHolder<T> holder = new BaseRecyclerViewHolder<>(this, view, type);
+        type.onCreateViewHolder(holder);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseRecyclerViewHolder<T> holder, int position) {
-        holder.setUpView(getItem(position), position);
+        holder.setup(getItem(position), position);
     }
 
     @Override
