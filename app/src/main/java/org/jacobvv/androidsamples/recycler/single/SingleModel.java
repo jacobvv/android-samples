@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.recycler;
+package org.jacobvv.androidsamples.recycler.single;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +8,7 @@ import java.util.List;
  * @author jacob
  * @date 19-4-17
  */
-public class Model {
+class SingleModel {
     private static int sCount = 0;
     private static String[] TITLES = {
             "Android",
@@ -25,28 +25,28 @@ public class Model {
             "A mobile app or mobile application is a computer program or..."
     };
 
-    public String img;
-    public String title;
-    public String content;
+    String img;
+    String title;
+    String content;
 
-    private Model(String img, String title, String content) {
+    private SingleModel(String img, String title, String content) {
         this.img = img;
         this.title = title;
         this.content = content;
     }
 
-    public static Collection<Model> buildList(int count) {
-        List<Model> result = new ArrayList<>(count);
+    static Collection<SingleModel> buildList(int count) {
+        List<SingleModel> result = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
-            result.add(new Model(String.valueOf(TITLES[sCount % 5].charAt(0)),
+            result.add(new SingleModel(String.valueOf(TITLES[sCount % 5].charAt(0)),
                     sCount + ". " + TITLES[sCount % 5], CONTENTS[sCount % 5]));
             sCount++;
         }
         return result;
     }
 
-    public static Model buildItem() {
-        Model model = new Model(String.valueOf(TITLES[sCount % 5].charAt(0)),
+    static SingleModel buildItem() {
+        SingleModel model = new SingleModel(String.valueOf(TITLES[sCount % 5].charAt(0)),
                 sCount + ". " + TITLES[sCount % 5], CONTENTS[sCount % 5]);
         sCount++;
         return model;
