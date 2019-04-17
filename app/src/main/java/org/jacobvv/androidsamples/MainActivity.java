@@ -16,8 +16,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private static final String TAG = "AndroidSamples";
-
     private List<String> mItems = new ArrayList<>();
 
     @Override

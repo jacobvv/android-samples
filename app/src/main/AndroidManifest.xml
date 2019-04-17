@@ -9,7 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".recycler.RecyclerActivity"></activity>
+        <activity android:name=".recycler.cursor.CursorActivity"></activity>
+        <activity
+            android:name=".recycler.multi.MultiTypeActivity"
+            android:label="@string/title_activity_multi_type"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".recycler.single.SingleTypeActivity"
+            android:label="@string/title_activity_single_type"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".recycler.RecyclerActivity" />
         <activity android:name=".databus.ActivityB" />
         <activity android:name=".databus.ActivityA" />
         <activity android:name=".MainActivity">

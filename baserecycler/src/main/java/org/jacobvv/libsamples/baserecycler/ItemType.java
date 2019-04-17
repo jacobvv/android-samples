@@ -1,6 +1,5 @@
 package org.jacobvv.libsamples.baserecycler;
 
-import android.support.annotation.IdRes;
 import android.view.View;
 
 /**

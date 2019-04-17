@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.jacobvv.androidsamples.Constants;
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.libsamples.databus.DataBus;
 import org.jacobvv.libsamples.databus.Observer;
@@ -18,7 +19,6 @@ import java.util.List;
 
 public class ActivityB extends AppCompatActivity {
 
-    private static final String TAG = "DataBusSample";
     private List<String> mEvents = new LinkedList<>();
     private int index = 0;
 
@@ -38,7 +38,7 @@ public class ActivityB extends AppCompatActivity {
                     public void onChanged(@Nullable String s) {
                         String msg = DateFormat.format("HH:mm:ss",
                                 System.currentTimeMillis()) + ": Receive tag-B msg: " + s;
-                        Log.d(TAG, msg);
+                        Log.d(Constants.TAG, msg);
                         mEvents.add(0, msg);
                         adapter.notifyDataSetChanged();
                     }
