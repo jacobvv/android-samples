@@ -6,9 +6,9 @@ import android.view.View;
  * @author jacob
  * @date 19-4-13
  */
-public interface ItemType {
+public interface ItemType<T> {
 
     int getLayoutId(int type);
 
-    <T> BaseRecyclerViewHolder<T> createViewHolder(int viewType, View view);
+    BaseRecyclerViewHolder<T> createViewHolder(int viewType, View view);
 }

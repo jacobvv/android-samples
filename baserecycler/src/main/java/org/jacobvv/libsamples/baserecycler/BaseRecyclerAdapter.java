@@ -6,9 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Common base class of common implementation for an {@link RecyclerView.Adapter Adapter}
  * that can be used in {@link RecyclerView RecyclerView}.
@@ -17,21 +14,19 @@ import java.util.List;
  * @author Jacob
  * @date 17-12-22
  */
-public class BaseRecyclerAdapter<T>
+public abstract class BaseRecyclerAdapter<T>
         extends RecyclerView.Adapter<BaseRecyclerViewHolder<T>> {
 
-    private List<T> items;
     private TypePool typePool;
 
-    public BaseRecyclerAdapter() {
-        this.items = new ArrayList<>();
+    BaseRecyclerAdapter() {
         this.typePool = new TypePool();
     }
 
     @NonNull
     @Override
     public BaseRecyclerViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemType type = typePool.getType(viewType);
+        ItemType<T> type = typePool.getType(viewType);
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(type.getLayoutId(viewType), null);
         return type.createViewHolder(viewType, view);
@@ -39,17 +34,12 @@ public class BaseRecyclerAdapter<T>
 
     @Override
     public void onBindViewHolder(@NonNull BaseRecyclerViewHolder<T> holder, int position) {
-        holder.setUpView(items.get(position), position);
+        holder.setUpView(getItem(position), position);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return typePool.getIndexOfType(items.get(position).getClass());
-    }
-
-    @Override
-    public int getItemCount() {
-        return items.size();
+        return typePool.getIndexOfType(getItem(position).getClass());
     }
 
     public void register(@NonNull ItemType itemType) {
@@ -59,5 +49,7 @@ public class BaseRecyclerAdapter<T>
     public void register(@NonNull Class<? extends T> clazz, @NonNull ItemType itemType) {
         typePool.register(clazz, itemType);
     }
+
+    protected abstract T getItem(int position);
 
 }

@@ -1,6 +1,5 @@
 package org.jacobvv.libsamples.baserecycler;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
@@ -18,12 +17,10 @@ import android.view.View;
  */
 public abstract class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
 
-    protected Context mContext;
     private SparseArray<View> mViews = new SparseArray<>();
 
     public BaseRecyclerViewHolder(View itemView) {
         super(itemView);
-        mContext = itemView.getContext();
     }
 
     @SuppressWarnings("unchecked")

@@ -37,7 +37,8 @@ public class TypePool implements ITypePool {
     }
 
     @Override
-    public ItemType getType(int viewType) {
+    @SuppressWarnings("unchecked")
+    public <T> ItemType<T> getType(int viewType) {
         return types.get(viewType);
     }
 
