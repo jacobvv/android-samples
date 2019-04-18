@@ -35,7 +35,7 @@ public class TypePool implements ITypePool {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> ItemType<T> getType(int viewType) {
+    public <T, VH extends BaseViewHolder<T>> ItemType<T, VH> getType(int viewType) {
         return types.get(viewType);
     }
 

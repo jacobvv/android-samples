@@ -12,13 +12,13 @@ import java.util.List;
  */
 public class Group {
 
-    private List<Item> list;
+    List<Item> list;
 
     public Group(int count) {
         this.list = new ArrayList<>(Item.buildList(count));
     }
 
-    private static class Item {
+    static class Item {
 
         private static int sCount = 0;
 

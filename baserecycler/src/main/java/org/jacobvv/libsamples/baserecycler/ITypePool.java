@@ -8,7 +8,7 @@ interface ITypePool {
 
     void register(Class<?> itemClass, ItemType itemType);
 
-    <T> ItemType<T> getType(int viewType);
+    <T, VH extends BaseViewHolder<T>> ItemType<T, VH> getType(int viewType);
 
     int getIndexOfType(Class<?> itemClass);
 }

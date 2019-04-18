@@ -16,9 +16,9 @@ class Abstract {
 
     private static int sCount = 0;
 
-    private int image;
-    private String title;
-    private String content;
+    int image;
+    String title;
+    String content;
 
     private Abstract(@IdRes int image, String title, String content) {
         this.image = image;

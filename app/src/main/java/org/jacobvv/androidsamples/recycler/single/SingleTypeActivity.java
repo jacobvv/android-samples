@@ -57,7 +57,7 @@ public class SingleTypeActivity extends AppCompatActivity {
         });
     }
 
-    private class SingleType extends ItemType<SingleModel> {
+    private class SingleType extends ItemType<SingleModel, BaseViewHolder<SingleModel>> {
 
         @Override
         public int getLayoutId(int type) {

@@ -25,18 +25,17 @@ public abstract class BaseRecyclerAdapter<T>
 
     @NonNull
     @Override
+    @SuppressWarnings("unchecked")
     public BaseViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemType<T> type = mTypePool.getType(viewType);
+        ItemType type = mTypePool.getType(viewType);
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(type.getLayoutId(viewType), null);
-        BaseViewHolder<T> holder = new BaseViewHolder<>(view, type);
-        type.onCreateViewHolder(holder, parent);
-        return holder;
+        return type.onCreateViewHolder(view, type);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder<T> holder, int position) {
-        ItemType<T> type = mTypePool.getType(holder.getItemViewType());
+        ItemType<T, BaseViewHolder<T>> type = mTypePool.getType(holder.getItemViewType());
         T item = getItem(position);
         type.onBindViewHolder(holder, item, position);
         holder.setup(item, position);

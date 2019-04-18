@@ -27,7 +27,7 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
     private T mItem;
     private int mPosition;
 
-    BaseViewHolder(View itemView, ItemType<T> type) {
+    public BaseViewHolder(View itemView, ItemType<T, ?> type) {
         super(itemView);
         BaseRecyclerAdapter<T> adapter = type.getAdapter();
         setOnItemClickListener(adapter, type.mItemClickListener);
@@ -67,8 +67,7 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
             this.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    l.onClick(adapter, BaseViewHolder.this, mItem,
-                            getAdapterPosition());
+                    l.onClick(adapter, BaseViewHolder.this, mItem, mPosition);
                 }
             });
         }
@@ -80,8 +79,7 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
             this.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return l.onLongClick(adapter, BaseViewHolder.this, mItem,
-                            getAdapterPosition());
+                    return l.onLongClick(adapter, BaseViewHolder.this, mItem, mPosition);
                 }
             });
         }
@@ -93,8 +91,7 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
             getView(id).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    l.onClick(adapter, BaseViewHolder.this, v, mItem,
-                            getAdapterPosition());
+                    l.onClick(adapter, BaseViewHolder.this, v, mItem, mPosition);
                 }
             });
         }
@@ -106,8 +103,7 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
             getView(id).setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return l.onLongClick(adapter, BaseViewHolder.this, v, mItem,
-                            getAdapterPosition());
+                    return l.onLongClick(adapter, BaseViewHolder.this, v, mItem, mPosition);
                 }
             });
         }

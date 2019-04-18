@@ -16,7 +16,7 @@ class Banner {
 
     private static int sCount = 0;
 
-    private int banner;
+    int banner;
 
     private Banner(@IdRes int banner) {
         this.banner = banner;
