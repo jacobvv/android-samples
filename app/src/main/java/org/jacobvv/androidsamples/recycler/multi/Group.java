@@ -10,11 +10,11 @@ import java.util.List;
  * @author jacob
  * @date 19-4-18
  */
-public class Group {
+class Group {
 
     List<Item> list;
 
-    public Group(int count) {
+    Group(int count) {
         this.list = new ArrayList<>(Item.buildList(count));
     }
 
@@ -33,16 +33,14 @@ public class Group {
         static Collection<Item> buildList(int count) {
             List<Item> result = new ArrayList<>(count);
             for (int i = 0; i < count; i++) {
-                result.add(new Item(Constants.ICONS[sCount % 9],
-                        sCount + ". " + Constants.TITLES[sCount % 5]));
+                result.add(new Item(Constants.ICONS[sCount % 9], String.valueOf(sCount)));
                 sCount++;
             }
             return result;
         }
 
         static Item buildItem() {
-            Item model = new Item(Constants.ICONS[sCount % 9],
-                    sCount + ". " + Constants.TITLES[sCount % 5]);
+            Item model = new Item(Constants.ICONS[sCount % 9], String.valueOf(sCount));
             sCount++;
             return model;
         }

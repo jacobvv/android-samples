@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.jacobvv.androidsamples.R;
+import org.jacobvv.androidsamples.recycler.multi.MultiTypeActivity;
 import org.jacobvv.androidsamples.recycler.single.SingleTypeActivity;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class RecyclerActivity extends AppCompatActivity implements AdapterView.O
                 i.setClass(this, SingleTypeActivity.class);
                 break;
             case 1:
-                i.setClass(this, RecyclerActivity.class);
+                i.setClass(this, MultiTypeActivity.class);
                 break;
             case 2:
                 i.setClass(this, RecyclerActivity.class);

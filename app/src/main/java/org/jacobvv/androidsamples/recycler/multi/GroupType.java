@@ -63,7 +63,8 @@ public class GroupType extends ItemType<Group, GroupViewHolder> {
             RecyclerView recycler = getView(R.id.rv_list);
             mAdapter = new BaseArrayAdapter<>();
             mAdapter.register(type);
-            recycler.setLayoutManager(new LinearLayoutManager(context));
+            recycler.setLayoutManager(new LinearLayoutManager(context,
+                    LinearLayoutManager.HORIZONTAL, false));
             recycler.setAdapter(mAdapter);
         }
 
