@@ -12,11 +12,11 @@
         <activity android:name=".recycler.cursor.CursorActivity" />
         <activity
             android:name=".recycler.multi.MultiTypeActivity"
-            android:label="@string/title_activity_multi_type"
+            android:label="@string/recycler_activity_title_multi_type"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".recycler.single.SingleTypeActivity"
-            android:label="@string/title_activity_single_type"
+            android:label="@string/recycler_activity_title_single_type"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".recycler.RecyclerActivity" />
         <activity android:name=".databus.ActivityB" />

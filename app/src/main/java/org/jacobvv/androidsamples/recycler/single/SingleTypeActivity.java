@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jacobvv.androidsamples.R;
@@ -66,10 +67,10 @@ public class SingleTypeActivity extends AppCompatActivity {
 
         @Override
         public void setupView(BaseRecyclerViewHolder<SingleModel> holder, SingleModel model, int position) {
-            TextView img = holder.getView(R.id.tv_img);
+            ImageView img = holder.getView(R.id.iv_icon);
             TextView title = holder.getView(R.id.tv_title);
             TextView content = holder.getView(R.id.tv_content);
-            img.setText(model.img);
+            img.setImageResource(model.icon);
             title.setText(model.title);
             content.setText(model.content);
         }
