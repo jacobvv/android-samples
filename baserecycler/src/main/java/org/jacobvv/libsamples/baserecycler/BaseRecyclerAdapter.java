@@ -15,41 +15,44 @@ import android.view.ViewGroup;
  * @date 17-12-22
  */
 public abstract class BaseRecyclerAdapter<T>
-        extends RecyclerView.Adapter<BaseRecyclerViewHolder<T>> {
+        extends RecyclerView.Adapter<BaseViewHolder<T>> {
 
-    private TypePool typePool;
+    private TypePool mTypePool;
 
     BaseRecyclerAdapter() {
-        this.typePool = new TypePool();
+        this.mTypePool = new TypePool();
     }
 
     @NonNull
     @Override
-    public BaseRecyclerViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemType<T> type = typePool.getType(viewType);
+    public BaseViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemType<T> type = mTypePool.getType(viewType);
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(type.getLayoutId(viewType), null);
-        BaseRecyclerViewHolder<T> holder = new BaseRecyclerViewHolder<>(this, view, type);
-        type.onCreateViewHolder(holder);
+        BaseViewHolder<T> holder = new BaseViewHolder<>(view, type);
+        type.onCreateViewHolder(holder, parent);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseRecyclerViewHolder<T> holder, int position) {
-        holder.setup(getItem(position), position);
+    public void onBindViewHolder(@NonNull BaseViewHolder<T> holder, int position) {
+        ItemType<T> type = mTypePool.getType(holder.getItemViewType());
+        T item = getItem(position);
+        type.onBindViewHolder(holder, item, position);
+        holder.setup(item, position);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return typePool.getIndexOfType(getItem(position).getClass());
+        return mTypePool.getIndexOfType(getItem(position).getClass());
     }
 
     public void register(@NonNull ItemType itemType) {
-        typePool.register(itemType);
+        register(null, itemType);
     }
 
-    public void register(@NonNull Class<? extends T> clazz, @NonNull ItemType itemType) {
-        typePool.register(clazz, itemType);
+    public void register(Class<? extends T> clazz, @NonNull ItemType itemType) {
+        mTypePool.register(clazz, itemType);
     }
 
     protected abstract T getItem(int position);

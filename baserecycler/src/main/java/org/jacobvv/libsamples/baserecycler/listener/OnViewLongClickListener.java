@@ -3,7 +3,7 @@ package org.jacobvv.libsamples.baserecycler.listener;
 import android.view.View;
 
 import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
-import org.jacobvv.libsamples.baserecycler.BaseRecyclerViewHolder;
+import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
 
 /**
  * @author jacob
@@ -17,6 +17,6 @@ public interface OnViewLongClickListener<T> {
      * @param model    the item model attach to clicked view.
      * @param position position in list of clicked view.
      */
-    boolean onLongClick(BaseRecyclerAdapter<T> adapter, BaseRecyclerViewHolder<T> holder,
+    boolean onLongClick(BaseRecyclerAdapter<T> adapter, BaseViewHolder<T> holder,
                         View v, T model, int position);
 }

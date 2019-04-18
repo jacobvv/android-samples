@@ -21,22 +21,31 @@ import org.jacobvv.libsamples.baserecycler.listener.OnViewLongClickListener;
  * @author Jacob
  * @date 17-12-23
  */
-public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
+public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
 
-    private BaseRecyclerAdapter<T> mAdapter;
-    private ItemType<T> mType;
     private SparseArray<View> mViews = new SparseArray<>();
     private T mItem;
+    private int mPosition;
 
-    BaseRecyclerViewHolder(BaseRecyclerAdapter<T> adapter, View itemView, ItemType<T> type) {
+    BaseViewHolder(View itemView, ItemType<T> type) {
         super(itemView);
-        this.mType = type;
-        this.mAdapter = adapter;
+        BaseRecyclerAdapter<T> adapter = type.getAdapter();
+        setOnItemClickListener(adapter, type.mItemClickListener);
+        setOnItemLongClickListener(adapter, type.mItemLongClickListener);
+        SparseArray<OnViewClickListener<T>> clickListeners = type.mViewClickListeners;
+        for (int i = clickListeners.size() - 1; i >= 0; i--) {
+            addOnClickListener(adapter, clickListeners.keyAt(i), clickListeners.valueAt(i));
+        }
+        SparseArray<OnViewLongClickListener<T>> longClickListeners = type.mViewLongClickListeners;
+        for (int i = longClickListeners.size() - 1; i >= 0; i--) {
+            addOnLongClickListener(adapter, longClickListeners.keyAt(i),
+                    longClickListeners.valueAt(i));
+        }
     }
 
-    void setup(T item, int position) {
+    void setup(T item, int pos) {
         this.mItem = item;
-        mType.setupView(this, item, position);
+        this.mPosition = pos;
     }
 
     @SuppressWarnings("unchecked")
@@ -52,52 +61,52 @@ public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
         return (V) view;
     }
 
-    public ItemType<T> getType() {
-        return mType;
-    }
-
-    public void setOnItemClickListener(final OnItemClickListener<T> l) {
+    private void setOnItemClickListener(final BaseRecyclerAdapter<T> adapter,
+                                        final OnItemClickListener<T> l) {
         if (l != null) {
             this.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    l.onClick(mAdapter, BaseRecyclerViewHolder.this, mItem,
+                    l.onClick(adapter, BaseViewHolder.this, mItem,
                             getAdapterPosition());
                 }
             });
         }
     }
 
-    public void setOnItemLongClickListener(final OnItemLongClickListener<T> l) {
+    private void setOnItemLongClickListener(final BaseRecyclerAdapter<T> adapter,
+                                            final OnItemLongClickListener<T> l) {
         if (l != null) {
             this.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return l.onLongClick(mAdapter, BaseRecyclerViewHolder.this, mItem,
+                    return l.onLongClick(adapter, BaseViewHolder.this, mItem,
                             getAdapterPosition());
                 }
             });
         }
     }
 
-    public void addOnClickListener(@IdRes int id, final OnViewClickListener<T> l) {
+    private void addOnClickListener(final BaseRecyclerAdapter<T> adapter,
+                                    @IdRes int id, final OnViewClickListener<T> l) {
         if (l != null) {
             getView(id).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    l.onClick(mAdapter, BaseRecyclerViewHolder.this, v, mItem,
+                    l.onClick(adapter, BaseViewHolder.this, v, mItem,
                             getAdapterPosition());
                 }
             });
         }
     }
 
-    public void addOnLongClickListener(@IdRes int id, final OnViewLongClickListener<T> l) {
+    private void addOnLongClickListener(final BaseRecyclerAdapter<T> adapter,
+                                        @IdRes int id, final OnViewLongClickListener<T> l) {
         if (l != null) {
             getView(id).setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return l.onLongClick(mAdapter, BaseRecyclerViewHolder.this, v, mItem,
+                    return l.onLongClick(adapter, BaseViewHolder.this, v, mItem,
                             getAdapterPosition());
                 }
             });

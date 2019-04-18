@@ -13,14 +13,15 @@ import java.util.List;
  * @date 19-4-17
  */
 class SingleModel {
+
     private static int sCount = 0;
 
-    int icon;
+    int image;
     String title;
     String content;
 
-    private SingleModel(@IdRes int icon, String title, String content) {
-        this.icon = icon;
+    private SingleModel(@IdRes int image, String title, String content) {
+        this.image = image;
         this.title = title;
         this.content = content;
     }

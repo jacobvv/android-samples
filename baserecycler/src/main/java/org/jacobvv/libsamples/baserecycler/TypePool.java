@@ -13,26 +13,23 @@ public class TypePool implements ITypePool {
     private final List<ItemType> types;
     private boolean isMultiType = true;
 
-    public TypePool() {
+    TypePool() {
         this.classes = new ArrayList<>();
         this.types = new ArrayList<>();
     }
 
     @Override
-    public void register(ItemType itemType) {
-        if (!types.isEmpty()) {
-            throw new RuntimeException();
-        }
-        isMultiType = false;
-        types.add(itemType);
-    }
-
-    @Override
     public void register(Class<?> itemClass, ItemType itemType) {
-        if (!isMultiType) {
-            throw new RuntimeException();
+        if (itemClass == null && !types.isEmpty()) {
+            throw new IllegalStateException();
+        } else if (itemClass != null && !isMultiType) {
+            throw new IllegalStateException();
         }
-        classes.add(itemClass);
+        if (itemClass == null) {
+            isMultiType = false;
+        } else {
+            classes.add(itemClass);
+        }
         types.add(itemType);
     }
 

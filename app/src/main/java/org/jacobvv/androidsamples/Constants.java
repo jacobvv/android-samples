@@ -29,9 +29,9 @@ public class Constants {
 
     public static String[] TITLES = {
             "Android",
-            "Mobile operating system",
-            "Java (programming language)",
-            "Open-source software",
+            "Operating system",
+            "Java language",
+            "Open-source",
             "Mobile app"
     };
 

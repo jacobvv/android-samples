@@ -1,6 +1,7 @@
 package org.jacobvv.androidsamples.recycler.single;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.libsamples.baserecycler.BaseArrayAdapter;
 import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
-import org.jacobvv.libsamples.baserecycler.BaseRecyclerViewHolder;
+import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
 import org.jacobvv.libsamples.baserecycler.ItemType;
 import org.jacobvv.libsamples.baserecycler.listener.OnItemClickListener;
 
@@ -28,9 +29,20 @@ public class SingleTypeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SingleType type = new SingleType();
+        type.setOnItemClickListener(new OnItemClickListener<SingleModel>() {
+            @Override
+            public void onClick(BaseRecyclerAdapter<SingleModel> adapter,
+                                BaseViewHolder<SingleModel> holder,
+                                SingleModel model, int position) {
+                Snackbar.make(holder.itemView, "On click: " + model.title,
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
         RecyclerView recycler = findViewById(R.id.rv_list);
         final BaseArrayAdapter<SingleModel> adapter = new BaseArrayAdapter<>();
-        adapter.register(new SingleType());
+        adapter.register(type);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recycler.setAdapter(adapter);
@@ -45,7 +57,7 @@ public class SingleTypeActivity extends AppCompatActivity {
         });
     }
 
-    private class SingleType implements ItemType<SingleModel> {
+    private class SingleType extends ItemType<SingleModel> {
 
         @Override
         public int getLayoutId(int type) {
@@ -53,27 +65,15 @@ public class SingleTypeActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onCreateViewHolder(BaseRecyclerViewHolder<SingleModel> holder) {
-            holder.setOnItemClickListener(new OnItemClickListener<SingleModel>() {
-                @Override
-                public void onClick(BaseRecyclerAdapter<SingleModel> adapter,
-                                    BaseRecyclerViewHolder<SingleModel> holder,
-                                    SingleModel model, int position) {
-                    Snackbar.make(holder.itemView, "On click: " + model.title,
-                            Snackbar.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        @Override
-        public void setupView(BaseRecyclerViewHolder<SingleModel> holder, SingleModel model, int position) {
+        public void onBindViewHolder(@NonNull BaseViewHolder<SingleModel> holder, SingleModel model, int position) {
             ImageView img = holder.getView(R.id.iv_icon);
             TextView title = holder.getView(R.id.tv_title);
             TextView content = holder.getView(R.id.tv_content);
-            img.setImageResource(model.icon);
+            img.setImageResource(model.image);
             title.setText(model.title);
             content.setText(model.content);
         }
+
     }
 
 }

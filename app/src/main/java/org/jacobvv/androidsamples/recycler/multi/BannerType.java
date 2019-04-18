@@ -1,13 +1,15 @@
 package org.jacobvv.androidsamples.recycler.multi;
 
-import org.jacobvv.libsamples.baserecycler.BaseRecyclerViewHolder;
+import android.support.annotation.NonNull;
+
+import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
 import org.jacobvv.libsamples.baserecycler.ItemType;
 
 /**
  * @author jacob
  * @date 19-4-18
  */
-public class BannerType implements ItemType<Banner> {
+public class BannerType extends ItemType<Banner> {
 
     @Override
     public int getLayoutId(int type) {
@@ -15,12 +17,7 @@ public class BannerType implements ItemType<Banner> {
     }
 
     @Override
-    public void onCreateViewHolder(BaseRecyclerViewHolder<Banner> holder) {
-
-    }
-
-    @Override
-    public void setupView(BaseRecyclerViewHolder<Banner> holder, Banner model, int position) {
+    public void onBindViewHolder(@NonNull BaseViewHolder<Banner> holder, Banner model, int position) {
 
     }
 }
