@@ -1,7 +1,9 @@
 package org.jacobvv.androidsamples.recycler;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,8 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.jacobvv.androidsamples.R;
+import org.jacobvv.androidsamples.recycler.cursor.CursorActivity;
 import org.jacobvv.androidsamples.recycler.multi.MultiTypeActivity;
 import org.jacobvv.androidsamples.recycler.single.SingleTypeActivity;
+import org.jacobvv.androidsamples.utils.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,7 @@ import java.util.List;
 public class RecyclerActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private List<String> mItems = new ArrayList<>();
+    private PermissionUtils.PermissionHelper mPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +50,29 @@ public class RecyclerActivity extends AppCompatActivity implements AdapterView.O
                 i.setClass(this, MultiTypeActivity.class);
                 break;
             case 2:
-                i.setClass(this, RecyclerActivity.class);
-                break;
+                mPermission = PermissionUtils.of(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .setCallback(new PermissionUtils.PermissionCallback() {
+                            @Override
+                            public void onResult(List<String> granted, List<String> denied,
+                                                 List<String> deniedForever) {
+                                if (denied.isEmpty() && deniedForever.isEmpty()) {
+                                    Intent i = new Intent(RecyclerActivity.this,
+                                            CursorActivity.class);
+                                    startActivity(i);
+                                }
+                            }
+                        })
+                        .request(1000);
+                return;
             default:
         }
         startActivity(i);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

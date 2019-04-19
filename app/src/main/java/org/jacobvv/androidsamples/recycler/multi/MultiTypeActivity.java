@@ -11,6 +11,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.jacobvv.androidsamples.R;
+import org.jacobvv.androidsamples.recycler.multi.model.Abstract;
+import org.jacobvv.androidsamples.recycler.multi.model.Banner;
+import org.jacobvv.androidsamples.recycler.multi.model.Group;
+import org.jacobvv.androidsamples.recycler.multi.type.AbstractType;
+import org.jacobvv.androidsamples.recycler.multi.type.BannerType;
+import org.jacobvv.androidsamples.recycler.multi.type.GroupType;
 import org.jacobvv.libsamples.baserecycler.BaseArrayAdapter;
 import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
 import org.jacobvv.libsamples.baserecycler.BaseViewHolder;

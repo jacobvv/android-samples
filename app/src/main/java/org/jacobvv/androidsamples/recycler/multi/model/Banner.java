@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.recycler.multi;
+package org.jacobvv.androidsamples.recycler.multi.model;
 
 import android.support.annotation.IdRes;
 
@@ -12,17 +12,17 @@ import java.util.List;
  * @author jacob
  * @date 19-4-18
  */
-class Banner {
+public class Banner {
 
     private static int sCount = 0;
 
-    int banner;
+    public int banner;
 
     private Banner(@IdRes int banner) {
         this.banner = banner;
     }
 
-    static Collection<Banner> buildList(int count) {
+    public static Collection<Banner> buildList(int count) {
         List<Banner> result = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             result.add(new Banner(Constants.BANNERS[sCount % 4]));
@@ -31,7 +31,7 @@ class Banner {
         return result;
     }
 
-    static Banner buildItem() {
+    public static Banner buildItem() {
         Banner model = new Banner(Constants.BANNERS[sCount % 4]);
         sCount++;
         return model;

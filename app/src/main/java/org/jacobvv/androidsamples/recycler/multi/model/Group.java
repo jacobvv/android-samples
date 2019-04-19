@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.recycler.multi;
+package org.jacobvv.androidsamples.recycler.multi.model;
 
 import org.jacobvv.androidsamples.Constants;
 
@@ -10,24 +10,24 @@ import java.util.List;
  * @author jacob
  * @date 19-4-18
  */
-class Group {
+public class Group {
 
-    List<Item> list;
+    public List<Item> list;
 
     private Group(int count) {
         this.list = new ArrayList<>(Item.buildList(count));
     }
 
-    static Group buildItem(int count) {
+    public static Group buildItem(int count) {
         return new Group(count);
     }
 
-    static class Item {
+    public static class Item {
 
         private static int sCount = 0;
 
-        int image;
-        String title;
+        public int image;
+        public String title;
 
         Item(int image, String title) {
             this.image = image;

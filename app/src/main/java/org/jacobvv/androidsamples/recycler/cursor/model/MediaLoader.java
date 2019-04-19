@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.recycler.cursor;
+package org.jacobvv.androidsamples.recycler.cursor.model;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.recycler.multi;
+package org.jacobvv.androidsamples.recycler.multi.model;
 
 import android.support.annotation.IdRes;
 
@@ -12,13 +12,13 @@ import java.util.List;
  * @author jacob
  * @date 19-4-18
  */
-class Abstract {
+public class Abstract {
 
     private static int sCount = 0;
 
-    int image;
-    String title;
-    String content;
+    public int image;
+    public String title;
+    public String content;
 
     private Abstract(@IdRes int image, String title, String content) {
         this.image = image;
@@ -26,7 +26,7 @@ class Abstract {
         this.content = content;
     }
 
-    static Collection<Abstract> buildList(int count) {
+    public static Collection<Abstract> buildList(int count) {
         List<Abstract> result = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             result.add(new Abstract(Constants.ICONS[sCount % 9],
@@ -37,7 +37,7 @@ class Abstract {
         return result;
     }
 
-    static Abstract buildItem() {
+    public static Abstract buildItem() {
         Abstract model = new Abstract(Constants.ICONS[sCount % 9],
                 sCount + ". " + Constants.TITLES[sCount % 5],
                 Constants.CONTENTS[sCount % 5]);

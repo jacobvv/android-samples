@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.recycler.multi;
+package org.jacobvv.androidsamples.recycler.multi.type;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,13 +9,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jacobvv.androidsamples.R;
+import org.jacobvv.androidsamples.recycler.multi.model.Group;
 import org.jacobvv.libsamples.baserecycler.BaseArrayAdapter;
 import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
 import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
 import org.jacobvv.libsamples.baserecycler.ItemType;
 import org.jacobvv.libsamples.baserecycler.listener.OnItemClickListener;
 
-import static org.jacobvv.androidsamples.recycler.multi.GroupType.GroupViewHolder;
+import static org.jacobvv.androidsamples.recycler.multi.type.GroupType.GroupViewHolder;
 
 /**
  * @author jacob

@@ -1,10 +1,11 @@
-package org.jacobvv.androidsamples.recycler.multi;
+package org.jacobvv.androidsamples.recycler.multi.type;
 
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jacobvv.androidsamples.R;
+import org.jacobvv.androidsamples.recycler.multi.model.Abstract;
 import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
 import org.jacobvv.libsamples.baserecycler.ItemType;
 

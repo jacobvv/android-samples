@@ -129,7 +129,7 @@ public abstract class BaseCursorAdapter<T> extends BaseRecyclerAdapter<T> {
 
     @Override
     public void add(@IntRange(from = 0) int position,
-                        @NonNull Collection<? extends T> data) {
+                    @NonNull Collection<? extends T> data) {
         int count = getItemCount();
         if (position > count || position < 0) {
             throw new IndexOutOfBoundsException("Position out of bounds: position="
@@ -157,6 +157,11 @@ public abstract class BaseCursorAdapter<T> extends BaseRecyclerAdapter<T> {
         } else {
             notifyItemRangeInserted(position, size);
         }
+    }
+
+    @Override
+    public void remove(int position) {
+        // TODO: Not completed yet.
     }
 
     @Override
