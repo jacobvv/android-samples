@@ -2,7 +2,7 @@
     <string name="app_name">AndroidSamples</string>
     <string name="recycler_activity_title_single_type">SingleTypeActivity</string>
     <string name="recycler_activity_title_multi_type">MultiTypeActivity</string>
-    <string name="recycler_image_des_icon">icon</string>
+    <string name="recycler_image_des_thumbnail">thumbnail</string>
     <string name="recycler_image_des_banner">banner</string>
     <string name="recycler_image_des_delete">delete</string>
     <string name="recycler_tv_hint_title">Title</string>
