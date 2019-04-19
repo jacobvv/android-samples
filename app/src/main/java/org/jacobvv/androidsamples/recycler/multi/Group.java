@@ -14,8 +14,12 @@ class Group {
 
     List<Item> list;
 
-    Group(int count) {
+    private Group(int count) {
         this.list = new ArrayList<>(Item.buildList(count));
+    }
+
+    static Group buildItem(int count) {
+        return new Group(count);
     }
 
     static class Item {

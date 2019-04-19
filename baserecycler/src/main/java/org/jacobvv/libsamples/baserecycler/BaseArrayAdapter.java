@@ -44,7 +44,8 @@ public class BaseArrayAdapter<T> extends BaseRecyclerAdapter<T> {
         notifyDataSetChanged();
     }
 
-    public void addData(@NonNull T data) {
+    @Override
+    public void add(@NonNull T data) {
         mData.add(data);
         if (mData.size() == 1) {
             notifyDataSetChanged();
@@ -53,7 +54,8 @@ public class BaseArrayAdapter<T> extends BaseRecyclerAdapter<T> {
         }
     }
 
-    public void addData(@IntRange(from = 0) int position, @NonNull T data) {
+    @Override
+    public void add(@IntRange(from = 0) int position, @NonNull T data) {
         mData.add(position, data);
         if (mData.size() == 1) {
             notifyDataSetChanged();
@@ -62,7 +64,8 @@ public class BaseArrayAdapter<T> extends BaseRecyclerAdapter<T> {
         }
     }
 
-    public void addData(@NonNull Collection<? extends T> data) {
+    @Override
+    public void add(@NonNull Collection<? extends T> data) {
         mData.addAll(data);
         if (mData.size() == data.size()) {
             notifyDataSetChanged();
@@ -71,8 +74,9 @@ public class BaseArrayAdapter<T> extends BaseRecyclerAdapter<T> {
         }
     }
 
-    public void addData(@IntRange(from = 0) int position,
-                        @NonNull Collection<? extends T> data) {
+    @Override
+    public void add(@IntRange(from = 0) int position,
+                    @NonNull Collection<? extends T> data) {
         mData.addAll(position, data);
         if (mData.size() == data.size()) {
             notifyDataSetChanged();
@@ -81,6 +85,7 @@ public class BaseArrayAdapter<T> extends BaseRecyclerAdapter<T> {
         }
     }
 
+    @Override
     public void remove(@IntRange(from = 0) int position) {
         mData.remove(position);
         if (mData.isEmpty()) {
@@ -89,5 +94,11 @@ public class BaseArrayAdapter<T> extends BaseRecyclerAdapter<T> {
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, mData.size() - position);
         }
+    }
+
+    @Override
+    public void clear() {
+        mData.clear();
+        notifyDataSetChanged();
     }
 }

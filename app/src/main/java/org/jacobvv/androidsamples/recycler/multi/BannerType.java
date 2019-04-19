@@ -20,7 +20,7 @@ public class BannerType extends ItemType<Banner, BaseViewHolder<Banner>> {
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder<Banner> holder, Banner model, int position) {
-        ImageView img = holder.getView(R.id.iv_banner);
+        ImageView img = holder.getView(R.id.iv_item_banner);
         img.setImageResource(model.banner);
     }
 }

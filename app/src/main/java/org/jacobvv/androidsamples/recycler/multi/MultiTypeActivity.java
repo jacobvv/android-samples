@@ -1,6 +1,7 @@
 package org.jacobvv.androidsamples.recycler.multi;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,13 +32,21 @@ public class MultiTypeActivity extends AppCompatActivity {
         AbstractType abstractType = new AbstractType();
         BannerType bannerType = new BannerType();
 
-        abstractType.addOnViewClickListener(R.id.iv_icon, new OnViewClickListener<Abstract>() {
+        abstractType.addOnViewClickListener(R.id.iv_item_image, new OnViewClickListener<Abstract>() {
             @Override
             public void onClick(BaseRecyclerAdapter<Abstract> adapter,
                                 BaseViewHolder<Abstract> holder, View v,
                                 Abstract model, int position) {
                 Toast.makeText(MultiTypeActivity.this,
                         "Image on click: " + model.title, Toast.LENGTH_SHORT).show();
+            }
+        });
+        abstractType.addOnViewClickListener(R.id.iv_item_delete, new OnViewClickListener<Abstract>() {
+            @Override
+            public void onClick(BaseRecyclerAdapter<Abstract> adapter,
+                                BaseViewHolder<Abstract> holder,
+                                View v, Abstract model, int position) {
+                adapter.remove(position);
             }
         });
         bannerType.setOnItemLongClickListener(new OnItemLongClickListener<Banner>() {
@@ -60,6 +69,14 @@ public class MultiTypeActivity extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recycler.setAdapter(adapter);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.add(buildItem());
+            }
+        });
     }
 
     private List<Object> buildList() {
@@ -70,10 +87,22 @@ public class MultiTypeActivity extends AppCompatActivity {
             if (Math.random() - 0.5 > 0) {
                 list.add(Banner.buildItem());
             } else {
-                list.add(new Group((int) (4 + Math.random() * 10)));
+                list.add(Group.buildItem((int) (4 + Math.random() * 10)));
             }
         }
         return list;
+    }
+
+    private Object buildItem() {
+        int type = (int) (Math.random() * 10000) % 3;
+        switch (type) {
+            case 0:
+                return Banner.buildItem();
+            case 1:
+                return Abstract.buildItem();
+            default:
+                return Group.buildItem((int) (4 + Math.random() * 10));
+        }
     }
 
 }

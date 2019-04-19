@@ -60,7 +60,7 @@ public class GroupType extends ItemType<Group, GroupViewHolder> {
                 }
             });
 
-            RecyclerView recycler = getView(R.id.rv_list);
+            RecyclerView recycler = getView(R.id.rv_item_list);
             mAdapter = new BaseArrayAdapter<>();
             mAdapter.register(type);
             recycler.setLayoutManager(new LinearLayoutManager(context,
@@ -82,7 +82,7 @@ public class GroupType extends ItemType<Group, GroupViewHolder> {
 
         @Override
         public void onBindViewHolder(@NonNull BaseViewHolder<Group.Item> holder, Group.Item model, int position) {
-            TextView icon = holder.getView(R.id.tv_icon);
+            TextView icon = holder.getView(R.id.tv_item_icon);
             icon.setCompoundDrawablesWithIntrinsicBounds(0, model.image, 0, 0);
             icon.setText(model.title);
         }

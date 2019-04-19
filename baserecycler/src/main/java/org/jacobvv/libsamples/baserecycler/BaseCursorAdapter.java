@@ -71,7 +71,8 @@ public abstract class BaseCursorAdapter<T> extends BaseRecyclerAdapter<T> {
         }
     }
 
-    public void addData(@NonNull T data) {
+    @Override
+    public void add(@NonNull T data) {
         checkDataValid();
         mCache.clear();
         int count = getItemCount();
@@ -83,7 +84,8 @@ public abstract class BaseCursorAdapter<T> extends BaseRecyclerAdapter<T> {
         }
     }
 
-    public void addData(@IntRange(from = 0) int position, @NonNull T data) {
+    @Override
+    public void add(@IntRange(from = 0) int position, @NonNull T data) {
         int count = getItemCount();
         if (position > count || position < 0) {
             throw new IndexOutOfBoundsException("Position out of bounds: position="
@@ -108,7 +110,8 @@ public abstract class BaseCursorAdapter<T> extends BaseRecyclerAdapter<T> {
         }
     }
 
-    public void addData(@NonNull Collection<? extends T> data) {
+    @Override
+    public void add(@NonNull Collection<? extends T> data) {
         checkDataValid();
         mCache.clear();
         int count = getItemCount();
@@ -124,7 +127,8 @@ public abstract class BaseCursorAdapter<T> extends BaseRecyclerAdapter<T> {
         }
     }
 
-    public void addData(@IntRange(from = 0) int position,
+    @Override
+    public void add(@IntRange(from = 0) int position,
                         @NonNull Collection<? extends T> data) {
         int count = getItemCount();
         if (position > count || position < 0) {
@@ -153,6 +157,14 @@ public abstract class BaseCursorAdapter<T> extends BaseRecyclerAdapter<T> {
         } else {
             notifyItemRangeInserted(position, size);
         }
+    }
+
+    @Override
+    public void clear() {
+        mCache.clear();
+        mData.clear();
+        mCursor.close();
+        mCursor = null;
     }
 
     private boolean isInCursor(int pos) {

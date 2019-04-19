@@ -1,10 +1,13 @@
 package org.jacobvv.libsamples.baserecycler;
 
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Collection;
 
 /**
  * Common base class of common implementation for an {@link RecyclerView.Adapter Adapter}
@@ -29,7 +32,7 @@ public abstract class BaseRecyclerAdapter<T>
     public BaseViewHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemType type = mTypePool.getType(viewType);
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(type.getLayoutId(viewType), null);
+                .inflate(type.getLayoutId(viewType), parent, false);
         return type.onCreateViewHolder(view, type);
     }
 
@@ -46,14 +49,30 @@ public abstract class BaseRecyclerAdapter<T>
         return mTypePool.getIndexOfType(getItem(position).getClass());
     }
 
-    public void register(@NonNull ItemType itemType) {
+    public <Type> void register(@NonNull ItemType<Type, ?> itemType) {
         register(null, itemType);
     }
 
-    public void register(Class<? extends T> clazz, @NonNull ItemType itemType) {
+
+    @SuppressWarnings("unchecked")
+    public <Type> void register(Class<? extends Type> clazz, @NonNull ItemType<Type, ?> itemType) {
         mTypePool.register(clazz, itemType);
+        itemType.setAdapter((BaseRecyclerAdapter<Type>) this);
     }
 
     protected abstract T getItem(int position);
+
+    public abstract void add(@NonNull T data);
+
+    public abstract void add(@IntRange(from = 0) int position, @NonNull T data);
+
+    public abstract void add(@NonNull Collection<? extends T> data);
+
+    public abstract void add(@IntRange(from = 0) int position,
+                             @NonNull Collection<? extends T> data);
+
+    public abstract void remove(@IntRange(from = 0) int position);
+
+    public abstract void clear();
 
 }

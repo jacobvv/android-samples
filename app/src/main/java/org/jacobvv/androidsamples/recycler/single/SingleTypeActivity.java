@@ -3,7 +3,6 @@ package org.jacobvv.androidsamples.recycler.single;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.libsamples.baserecycler.BaseArrayAdapter;
@@ -19,6 +19,7 @@ import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
 import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
 import org.jacobvv.libsamples.baserecycler.ItemType;
 import org.jacobvv.libsamples.baserecycler.listener.OnItemClickListener;
+import org.jacobvv.libsamples.baserecycler.listener.OnViewClickListener;
 
 public class SingleTypeActivity extends AppCompatActivity {
 
@@ -35,8 +36,16 @@ public class SingleTypeActivity extends AppCompatActivity {
             public void onClick(BaseRecyclerAdapter<SingleModel> adapter,
                                 BaseViewHolder<SingleModel> holder,
                                 SingleModel model, int position) {
-                Snackbar.make(holder.itemView, "On click: " + model.title,
-                        Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(SingleTypeActivity.this, "On click: " + model.title,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        type.addOnViewClickListener(R.id.iv_item_delete, new OnViewClickListener<SingleModel>() {
+            @Override
+            public void onClick(BaseRecyclerAdapter<SingleModel> adapter,
+                                BaseViewHolder<SingleModel> holder,
+                                View v, SingleModel model, int position) {
+                adapter.remove(position);
             }
         });
 
@@ -52,7 +61,7 @@ public class SingleTypeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adapter.addData(SingleModel.buildItem());
+                adapter.add(SingleModel.buildItem());
             }
         });
     }
@@ -66,9 +75,9 @@ public class SingleTypeActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull BaseViewHolder<SingleModel> holder, SingleModel model, int position) {
-            ImageView img = holder.getView(R.id.iv_icon);
-            TextView title = holder.getView(R.id.tv_title);
-            TextView content = holder.getView(R.id.tv_content);
+            ImageView img = holder.getView(R.id.iv_item_image);
+            TextView title = holder.getView(R.id.tv_item_title);
+            TextView content = holder.getView(R.id.tv_item_content);
             img.setImageResource(model.image);
             title.setText(model.title);
             content.setText(model.content);
