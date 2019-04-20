@@ -1,1 +1,1 @@
-include ':app', ':databus', ':baserecycler'
+include ':app', ':databus', ':baserecycler', ':utils'
