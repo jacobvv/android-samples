@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.jacobvv.androidsamples.databus.ActivityA;
+import org.jacobvv.androidsamples.permission.PermissionActivity;
 import org.jacobvv.androidsamples.recycler.RecyclerActivity;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         mItems.add("DataBus Sample");
         mItems.add("BaseRecyclerView Sample");
+        mItems.add("Runtime permission Sample");
 
         ListView listView = findViewById(R.id.lv_list);
         listView.setAdapter(new ArrayAdapter<>(this,
@@ -38,12 +40,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (position) {
             case 0:
                 i.setClass(this, ActivityA.class);
-                startActivity(i);
                 break;
             case 1:
                 i.setClass(this, RecyclerActivity.class);
-                startActivity(i);
+                break;
+            case 2:
+                i.setClass(this, PermissionActivity.class);
+                break;
             default:
         }
+        startActivity(i);
     }
 }

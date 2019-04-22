@@ -1,1 +1,1 @@
-include ':app', ':databus', ':baserecycler', ':utils'
+include ':app', ':databus', ':baserecycler', ':utils', ':permission-compiler', ':permission-annotaion'
