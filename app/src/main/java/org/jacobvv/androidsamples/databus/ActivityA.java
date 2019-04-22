@@ -12,8 +12,8 @@ import android.widget.ListView;
 
 import org.jacobvv.androidsamples.Constants;
 import org.jacobvv.androidsamples.R;
-import org.jacobvv.libsamples.databus.DataBus;
-import org.jacobvv.libsamples.databus.Observer;
+import org.jacobvv.databus.DataBus;
+import org.jacobvv.databus.Observer;
 
 import java.util.LinkedList;
 import java.util.List;

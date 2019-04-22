@@ -5,8 +5,8 @@ import android.widget.ImageView;
 
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.androidsamples.recycler.multi.model.Banner;
-import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
-import org.jacobvv.libsamples.baserecycler.ItemType;
+import org.jacobvv.baserecycler.BaseViewHolder;
+import org.jacobvv.baserecycler.ItemType;
 
 /**
  * @author jacob

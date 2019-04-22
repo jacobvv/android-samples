@@ -17,11 +17,11 @@ import org.jacobvv.androidsamples.recycler.multi.model.Group;
 import org.jacobvv.androidsamples.recycler.multi.type.AbstractType;
 import org.jacobvv.androidsamples.recycler.multi.type.BannerType;
 import org.jacobvv.androidsamples.recycler.multi.type.GroupType;
-import org.jacobvv.libsamples.baserecycler.BaseArrayAdapter;
-import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
-import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
-import org.jacobvv.libsamples.baserecycler.listener.OnItemLongClickListener;
-import org.jacobvv.libsamples.baserecycler.listener.OnViewClickListener;
+import org.jacobvv.baserecycler.BaseArrayAdapter;
+import org.jacobvv.baserecycler.BaseRecyclerAdapter;
+import org.jacobvv.baserecycler.BaseViewHolder;
+import org.jacobvv.baserecycler.listener.OnItemLongClickListener;
+import org.jacobvv.baserecycler.listener.OnViewClickListener;
 
 import java.util.ArrayList;
 import java.util.List;

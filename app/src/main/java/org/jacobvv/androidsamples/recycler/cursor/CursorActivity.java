@@ -19,10 +19,10 @@ import org.jacobvv.androidsamples.recycler.cursor.model.Image;
 import org.jacobvv.androidsamples.recycler.cursor.model.MediaRepository;
 import org.jacobvv.androidsamples.recycler.cursor.type.CameraType;
 import org.jacobvv.androidsamples.recycler.cursor.type.ImageType;
-import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
-import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
-import org.jacobvv.libsamples.baserecycler.listener.OnItemClickListener;
-import org.jacobvv.libsamples.baserecycler.listener.OnViewClickListener;
+import org.jacobvv.baserecycler.BaseRecyclerAdapter;
+import org.jacobvv.baserecycler.BaseViewHolder;
+import org.jacobvv.baserecycler.listener.OnItemClickListener;
+import org.jacobvv.baserecycler.listener.OnViewClickListener;
 
 public class CursorActivity extends AppCompatActivity {
 

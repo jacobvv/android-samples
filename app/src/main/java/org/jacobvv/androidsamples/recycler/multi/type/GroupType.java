@@ -10,11 +10,11 @@ import android.widget.Toast;
 
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.androidsamples.recycler.multi.model.Group;
-import org.jacobvv.libsamples.baserecycler.BaseArrayAdapter;
-import org.jacobvv.libsamples.baserecycler.BaseRecyclerAdapter;
-import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
-import org.jacobvv.libsamples.baserecycler.ItemType;
-import org.jacobvv.libsamples.baserecycler.listener.OnItemClickListener;
+import org.jacobvv.baserecycler.BaseArrayAdapter;
+import org.jacobvv.baserecycler.BaseRecyclerAdapter;
+import org.jacobvv.baserecycler.BaseViewHolder;
+import org.jacobvv.baserecycler.ItemType;
+import org.jacobvv.baserecycler.listener.OnItemClickListener;
 
 import static org.jacobvv.androidsamples.recycler.multi.type.GroupType.GroupViewHolder;
 

@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.androidsamples.recycler.multi.model.Abstract;
-import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
-import org.jacobvv.libsamples.baserecycler.ItemType;
+import org.jacobvv.baserecycler.BaseViewHolder;
+import org.jacobvv.baserecycler.ItemType;
 
 /**
  * @author jacob

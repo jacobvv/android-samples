@@ -7,8 +7,8 @@ import com.bumptech.glide.Glide;
 
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.androidsamples.recycler.cursor.model.Image;
-import org.jacobvv.libsamples.baserecycler.BaseViewHolder;
-import org.jacobvv.libsamples.baserecycler.ItemType;
+import org.jacobvv.baserecycler.BaseViewHolder;
+import org.jacobvv.baserecycler.ItemType;
 
 /**
  * @author jacob

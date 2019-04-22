@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import org.jacobvv.androidsamples.recycler.cursor.model.Image;
-import org.jacobvv.libsamples.baserecycler.BaseCursorAdapter;
+import org.jacobvv.baserecycler.BaseCursorAdapter;
 
 import java.io.File;
 
