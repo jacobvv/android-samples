@@ -33,6 +33,6 @@ dependencies {
 
     implementation project(path: ':databus')
     implementation project(path: ':baserecycler')
-    implementation project(path: ':permission-annotaion')
+    implementation project(path: ':permission-api')
     annotationProcessor project(path: ':permission-compiler')
 }
