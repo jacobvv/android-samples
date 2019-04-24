@@ -23,21 +23,23 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_take_photo:
-                takePhoto();
+                PermissionActivity_PermissionHelper.takePhoto_WithPermissionCheck(this);
                 break;
             default:
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionActivity_PermissionHelper.onRequestPermissionsResult(this, requestCode,
+                permissions, grantResults);
     }
 
     @NeedPermission(Manifest.permission.CAMERA)
-    public int takePhoto() {
+    public void takePhoto() {
         // TODO: Sample for request permission.
-        return 0;
     }
 
 }
