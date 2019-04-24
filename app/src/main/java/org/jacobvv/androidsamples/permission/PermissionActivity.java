@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import org.jacobvv.androidsamples.R;
-import org.jacobvv.permission.annotaion.NeedPermission;
+import org.jacobvv.permission.annotaion.RequiresPermission;
+import org.jacobvv.permission.annotaion.OnPermissionDenied;
 
 public class PermissionActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,9 +39,14 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
                 permissions, grantResults);
     }
 
-    @NeedPermission(Manifest.permission.CAMERA)
+    @RequiresPermission(value = Manifest.permission.CAMERA, requestCode = 1)
     public void takePhoto() {
         // TODO: Sample for request permission.
     }
 
+    @OnPermissionDenied(1)
+    public void takePhotoDenied() {
+        Toast.makeText(this, "Request camera permission denied.",
+                Toast.LENGTH_SHORT).show();
+    }
 }

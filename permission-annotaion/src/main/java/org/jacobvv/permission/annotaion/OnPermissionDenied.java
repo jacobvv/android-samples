@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
  * @author jacob
  * @date 19-4-22
  */
-@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.METHOD)
-public @interface NeedPermission {
-    String[] value();
+@Retention(RetentionPolicy.CLASS)
+public @interface OnPermissionDenied {
+    int value() default 0;
 }
