@@ -18,8 +18,10 @@ public class MethodInfo {
     }
 
     MethodInfo(String name, List<ParameterInfo> parameters, ParameterInfo returnValue) {
+        ArrayList<ParameterInfo> params = new ArrayList<>(parameters);
+        params.sort((p0, p1) -> p0.getPosition() - p1.getPosition());
         this.name = name;
-        this.parameters = Collections.unmodifiableList(new ArrayList<>(parameters));
+        this.parameters = Collections.unmodifiableList(params);
         this.returnValue = returnValue;
     }
 

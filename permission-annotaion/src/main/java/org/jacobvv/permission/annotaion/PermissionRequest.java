@@ -7,5 +7,5 @@ package org.jacobvv.permission.annotaion;
 public interface PermissionRequest<T> {
     void proceed(T target);
 
-    void cancel(T target);
+    void cancel();
 }

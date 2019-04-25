@@ -20,15 +20,15 @@ final class PermissionActivity_PermissionHelperDemo {
     }
 
     static void takePhoto_WithPermissionCheck(@NonNull PermissionActivity target) {
-        List<String> permissionsDenied = PermissionUtils.shouldPermissionRequest(target, PERMISSION_TAKEPHOTO);
-        if (permissionsDenied.isEmpty()) {
+        List<String> deniedForever = PermissionUtils.shouldPermissionRequest(target, PERMISSION_TAKEPHOTO);
+        if (deniedForever.isEmpty()) {
             target.takePhoto();
         } else {
-            List<String> permissionsRationale = PermissionUtils.shouldShowRationale(target,
+            List<String> denied = PermissionUtils.shouldShowRationale(target,
                     PERMISSION_TAKEPHOTO);
-            if (!permissionsRationale.isEmpty()) {
-                permissionsDenied.removeAll(permissionsRationale);
-                TakePhoto_PermissionRequest request = new TakePhoto_PermissionRequest(permissionsDenied, permissionsRationale);
+            if (!denied.isEmpty()) {
+                deniedForever.removeAll(denied);
+                TakePhoto_PermissionRequest request = new TakePhoto_PermissionRequest(denied, deniedForever);
                 // TODO: Show rationale if necessary.
             } else {
                 ActivityCompat.requestPermissions(target, PERMISSION_TAKEPHOTO, REQUEST_TAKEPHOTO);
@@ -57,13 +57,13 @@ final class PermissionActivity_PermissionHelperDemo {
 
     private static final class TakePhoto_PermissionRequest
             implements PermissionRequest<PermissionActivity> {
-        private final List<String> permissionsDenied;
-        private final List<String> permissionsRationale;
+        private final List<String> denied;
+        private final List<String> deniedForever;
 
-        private TakePhoto_PermissionRequest(@NonNull List<String> permissionsDenied,
-                                            @NonNull List<String> permissionsRationale) {
-            this.permissionsDenied = permissionsDenied;
-            this.permissionsRationale = permissionsRationale;
+        private TakePhoto_PermissionRequest(@NonNull List<String> denied,
+                                            @NonNull List<String> deniedForever) {
+            this.denied = denied;
+            this.deniedForever = deniedForever;
         }
 
         @Override
@@ -72,7 +72,7 @@ final class PermissionActivity_PermissionHelperDemo {
         }
 
         @Override
-        public void cancel(PermissionActivity target) {
+        public void cancel() {
             // TODO: Callback permissions denied if necessary.
         }
     }

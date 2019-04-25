@@ -69,30 +69,30 @@ class PermissionSet {
                 .addModifiers(FINAL)
                 .addMethod(constructor);
 
-        ClassName annotationNonNull = ClassName.get(Constants.ANNOTATION_PACKAGE, Constants.TYPE_NONNULL);
+        ClassName nonNull = ClassName.get(Constants.ANNOTATION_PACKAGE, Constants.TYPE_NONNULL);
         ClassName permissionUtils = ClassName.get(Constants.PERMISSION_PACKAGE, Constants.TYPE_UTILS);
         CodeBlock.Builder switchBuilder = CodeBlock.builder()
-                .beginControlFlow("switch ($N)", Constants.PARAM_REQUEST_CODE);
+                .beginControlFlow("switch ($N)", Constants.VAR_REQUEST_CODE);
         MethodSpec.Builder resultBuilder = MethodSpec.methodBuilder(Constants.METHOD_RESULT)
                 .addModifiers(STATIC)
-                .addParameter(ParameterSpec.builder(targetTypeName, Constants.PARAM_TARGET)
-                        .addAnnotation(annotationNonNull).build())
-                .addParameter(int.class, Constants.PARAM_REQUEST_CODE)
-                .addParameter(ParameterSpec.builder(String[].class, Constants.PARAM_PERMISSIONS)
-                        .addAnnotation(annotationNonNull).build())
-                .addParameter(ParameterSpec.builder(int[].class, Constants.PARAM_GRANT_RESULTS)
-                        .addAnnotation(annotationNonNull).build())
-                .addStatement("$T<$T> $N = $T.$L($N, $N)", List.class, String.class,
+                .addParameter(ParameterSpec.builder(targetTypeName, Constants.VAR_TARGET)
+                        .addAnnotation(nonNull).build())
+                .addParameter(int.class, Constants.VAR_REQUEST_CODE)
+                .addParameter(ParameterSpec.builder(String[].class, Constants.VAR_PERMISSIONS)
+                        .addAnnotation(nonNull).build())
+                .addParameter(ParameterSpec.builder(int[].class, Constants.VAR_GRANT_RESULTS)
+                        .addAnnotation(nonNull).build())
+                .addStatement("$T<$T> $N = $T.$N($N, $N)", List.class, String.class,
                         Constants.VAR_DENIED_FOREVER, permissionUtils, Constants.METHOD_CHECK,
-                        Constants.PARAM_PERMISSIONS, Constants.PARAM_GRANT_RESULTS);
+                        Constants.VAR_PERMISSIONS, Constants.VAR_GRANT_RESULTS);
 
-//        for (PermissionRequestSet request : requests) {
-//            result.addField(request.createFieldRequestCode())
-//                    .addField(request.createFieldPermissions())
-//                    .addMethod(request.createMethodWithPermission())
+        for (PermissionRequestSet request : requests) {
+            result.addField(request.createFieldRequestCode())
+                    .addField(request.createFieldPermissions())
+                    .addMethod(request.createMethodWithCheck());
 //                    .addType(request.createInterfaceRequest());
 //            switchBuilder.add(request.createSwitchCase());
-//        }
+        }
 
         CodeBlock switchCode = switchBuilder.add("default:\n").endControlFlow().build();
         result.addMethod(resultBuilder.addCode(switchCode).build());
@@ -114,7 +114,7 @@ class PermissionSet {
         private PermissionRequestSet.Builder getOrCreateRequest(int requestCode) {
             PermissionRequestSet.Builder request = requestsMap.get(requestCode);
             if (request == null) {
-                request = new PermissionRequestSet.Builder(requestCode);
+                request = new PermissionRequestSet.Builder(targetTypeName, requestCode);
                 requestsMap.put(requestCode, request);
             }
             return request;
