@@ -2,12 +2,14 @@ package org.jacobvv.permission.compiler;
 
 import com.google.auto.common.SuperficialValidation;
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeName;
 
 import org.jacobvv.permission.annotaion.OnPermissionDenied;
 import org.jacobvv.permission.annotaion.OnShowRationale;
 import org.jacobvv.permission.annotaion.RequiresPermission;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
@@ -21,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Filer;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -49,11 +53,30 @@ public class PermissionProcessor extends AbstractProcessor {
             OnShowRationale.class
     );
 
+    private Filer filer;
+
+    @Override
+    public synchronized void init(ProcessingEnvironment env) {
+        super.init(env);
+        filer = env.getFiler();
+    }
+
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment env) {
-        Map<TypeElement, PermissionSet> builderMap = findAndParseTargets(env);
+        Map<TypeElement, PermissionSet> permissionSet = findAndParseTargets(env);
 
-        // TODO: Build the permission set & Generate java files.
+        for (Map.Entry<TypeElement, PermissionSet> entry : permissionSet.entrySet()) {
+            TypeElement typeElement = entry.getKey();
+            PermissionSet permission = entry.getValue();
+
+            JavaFile javaFile = permission.brewJava();
+            try {
+                javaFile.writeTo(filer);
+            } catch (IOException e) {
+                error(typeElement, "Unable to write binding for type %s: %s", typeElement, e.getMessage());
+            }
+        }
+
         return false;
     }
 
@@ -99,7 +122,14 @@ public class PermissionProcessor extends AbstractProcessor {
             }
         }
 
-        return null;
+        Map<TypeElement, PermissionSet> permissionMap = new LinkedHashMap<>();
+        for (Map.Entry<TypeElement, PermissionSet.Builder> entry : builderMap.entrySet()) {
+            TypeElement type = entry.getKey();
+            PermissionSet.Builder builder = entry.getValue();
+            permissionMap.put(type, builder.build());
+        }
+
+        return permissionMap;
     }
 
     private void parsePermission(

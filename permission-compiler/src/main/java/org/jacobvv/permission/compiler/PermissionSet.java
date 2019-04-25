@@ -2,27 +2,42 @@ package org.jacobvv.permission.compiler;
 
 import com.google.common.collect.ImmutableList;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import static com.google.auto.common.MoreElements.getPackage;
+import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.STATIC;
 
 /**
  * @author jacob
  * @date 19-4-24
  */
-public class PermissionSet {
-
+class PermissionSet {
     private static int requestCodeIndex = 1;
 
-    private PermissionSet(TypeName targetTypeName, ClassName bindingClassName,
+    private final TypeName targetTypeName;
+    private final ClassName permissionClassName;
+    private final ImmutableList<PermissionRequestSet> requests;
+
+    private PermissionSet(TypeName targetTypeName, ClassName permissionClassName,
                           ImmutableList<PermissionRequestSet> requests) {
+        this.targetTypeName = targetTypeName;
+        this.permissionClassName = permissionClassName;
+        this.requests = requests;
     }
 
     static Builder newBuilder(TypeElement enclosingElement) {
@@ -40,6 +55,49 @@ public class PermissionSet {
                 className + "_PermissionHelper");
 
         return new Builder(targetType, helperClassName);
+    }
+
+    JavaFile brewJava() {
+        TypeSpec permissionHelper = createType();
+        return JavaFile.builder(permissionClassName.packageName(), permissionHelper).build();
+    }
+
+    private TypeSpec createType() {
+        MethodSpec constructor = MethodSpec.constructorBuilder().addModifiers(PRIVATE).build();
+        TypeSpec.Builder result = TypeSpec.classBuilder(permissionClassName.simpleName())
+                .addJavadoc(Constants.WARNING_TIPS)
+                .addModifiers(FINAL)
+                .addMethod(constructor);
+
+        ClassName annotationNonNull = ClassName.get(Constants.ANNOTATION_PACKAGE, Constants.TYPE_NONNULL);
+        ClassName permissionUtils = ClassName.get(Constants.PERMISSION_PACKAGE, Constants.TYPE_UTILS);
+        CodeBlock.Builder switchBuilder = CodeBlock.builder()
+                .beginControlFlow("switch ($N)", Constants.PARAM_REQUEST_CODE);
+        MethodSpec.Builder resultBuilder = MethodSpec.methodBuilder(Constants.METHOD_RESULT)
+                .addModifiers(STATIC)
+                .addParameter(ParameterSpec.builder(targetTypeName, Constants.PARAM_TARGET)
+                        .addAnnotation(annotationNonNull).build())
+                .addParameter(int.class, Constants.PARAM_REQUEST_CODE)
+                .addParameter(ParameterSpec.builder(String[].class, Constants.PARAM_PERMISSIONS)
+                        .addAnnotation(annotationNonNull).build())
+                .addParameter(ParameterSpec.builder(int[].class, Constants.PARAM_GRANT_RESULTS)
+                        .addAnnotation(annotationNonNull).build())
+                .addStatement("$T<$T> $N = $T.$L($N, $N)", List.class, String.class,
+                        Constants.VAR_DENIED_FOREVER, permissionUtils, Constants.METHOD_CHECK,
+                        Constants.PARAM_PERMISSIONS, Constants.PARAM_GRANT_RESULTS);
+
+//        for (PermissionRequestSet request : requests) {
+//            result.addField(request.createFieldRequestCode())
+//                    .addField(request.createFieldPermissions())
+//                    .addMethod(request.createMethodWithPermission())
+//                    .addType(request.createInterfaceRequest());
+//            switchBuilder.add(request.createSwitchCase());
+//        }
+
+        CodeBlock switchCode = switchBuilder.add("default:\n").endControlFlow().build();
+        result.addMethod(resultBuilder.addCode(switchCode).build());
+
+        return result.build();
     }
 
     static final class Builder {
@@ -70,8 +128,8 @@ public class PermissionSet {
             return new PermissionSet(targetTypeName, permissionClassName, requests.build());
         }
 
-        public boolean addPermissionRequestMethod(int requestCode, String[] permissions,
-                                                  MethodInfo method) {
+        boolean addPermissionRequestMethod(int requestCode, String[] permissions,
+                                           MethodInfo method) {
             if (requestCode == 0) {
                 requestCode = requestCodeIndex++;
             }

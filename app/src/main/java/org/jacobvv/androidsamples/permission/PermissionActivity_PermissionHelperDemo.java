@@ -12,10 +12,11 @@ import java.util.List;
  * @author jacob
  * @date 19-4-23
  */
-final class PermissionActivity_PermissionHelper {
+final class PermissionActivity_PermissionHelperDemo {
     private static final int REQUEST_TAKEPHOTO = 0;
     private static final String[] PERMISSION_TAKEPHOTO = new String[] {"android.permission.CAMERA"};
-    private PermissionActivity_PermissionHelper() {
+
+    private PermissionActivity_PermissionHelperDemo() {
     }
 
     static void takePhoto_WithPermissionCheck(@NonNull PermissionActivity target) {

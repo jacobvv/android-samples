@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.jacobvv.androidsamples.R;
-import org.jacobvv.permission.annotaion.RequiresPermission;
 import org.jacobvv.permission.annotaion.OnPermissionDenied;
+import org.jacobvv.permission.annotaion.RequiresPermission;
 
 public class PermissionActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,7 +25,7 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_take_photo:
-                PermissionActivity_PermissionHelper.takePhoto_WithPermissionCheck(this);
+                PermissionActivity_PermissionHelperDemo.takePhoto_WithPermissionCheck(this);
                 break;
             default:
         }
@@ -35,7 +35,7 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionActivity_PermissionHelper.onRequestPermissionsResult(this, requestCode,
+        PermissionActivity_PermissionHelperDemo.onRequestPermissionsResult(this, requestCode,
                 permissions, grantResults);
     }
 
