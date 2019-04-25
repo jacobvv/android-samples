@@ -8,7 +8,7 @@ import java.util.List;
  * @author jacob
  * @date 19-4-25
  */
-public class MethodInfo {
+class MethodInfo {
     private final String name;
     private final List<ParameterInfo> parameters;
     private final ParameterInfo returnValue;
@@ -25,15 +25,15 @@ public class MethodInfo {
         this.returnValue = returnValue;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public List<ParameterInfo> getParameters() {
+    List<ParameterInfo> getParameters() {
         return parameters;
     }
 
-    public ParameterInfo getReturnValue() {
+    ParameterInfo getReturnValue() {
         return returnValue;
     }
 }

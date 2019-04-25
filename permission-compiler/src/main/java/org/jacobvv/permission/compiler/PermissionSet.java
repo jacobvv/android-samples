@@ -89,8 +89,8 @@ class PermissionSet {
         for (PermissionRequestSet request : requests) {
             result.addField(request.createFieldRequestCode())
                     .addField(request.createFieldPermissions())
-                    .addMethod(request.createMethodWithCheck());
-//                    .addType(request.createInterfaceRequest());
+                    .addMethod(request.createMethodWithCheck())
+                    .addType(request.createInterfaceRequest());
 //            switchBuilder.add(request.createSwitchCase());
         }
 

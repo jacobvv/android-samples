@@ -1,4 +1,4 @@
-package org.jacobvv.permission.annotaion;
+package org.jacobvv.permission.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,11 +11,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface OnPermissionDenied {
-    /**
-     * Request code for permission request.
-     *
-     * @return request code
-     */
-    int value() default 0;
+public @interface RequiresPermission {
+    String[] value();
+    int requestCode() default 0;
 }

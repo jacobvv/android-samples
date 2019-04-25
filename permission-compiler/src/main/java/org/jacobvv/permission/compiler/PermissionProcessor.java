@@ -5,9 +5,9 @@ import com.google.auto.service.AutoService;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeName;
 
-import org.jacobvv.permission.annotaion.OnPermissionDenied;
-import org.jacobvv.permission.annotaion.OnShowRationale;
-import org.jacobvv.permission.annotaion.RequiresPermission;
+import org.jacobvv.permission.annotation.OnPermissionDenied;
+import org.jacobvv.permission.annotation.OnShowRationale;
+import org.jacobvv.permission.annotation.RequiresPermission;
 
 import java.io.IOException;
 import java.io.PrintWriter;

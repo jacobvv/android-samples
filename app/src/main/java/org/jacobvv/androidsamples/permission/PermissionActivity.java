@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.jacobvv.androidsamples.R;
-import org.jacobvv.permission.annotaion.OnPermissionDenied;
-import org.jacobvv.permission.annotaion.RequiresPermission;
+import org.jacobvv.permission.annotation.OnPermissionDenied;
+import org.jacobvv.permission.annotation.RequiresPermission;
 
 public class PermissionActivity extends AppCompatActivity implements View.OnClickListener {
 

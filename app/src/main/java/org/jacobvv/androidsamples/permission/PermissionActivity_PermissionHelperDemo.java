@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
 import org.jacobvv.permission.PermissionUtils;
-import org.jacobvv.permission.annotaion.PermissionRequest;
+import org.jacobvv.permission.annotation.PermissionRequest;
 
 import java.util.List;
 
@@ -67,7 +67,7 @@ final class PermissionActivity_PermissionHelperDemo {
         }
 
         @Override
-        public void proceed(PermissionActivity target) {
+        public void proceed(@NonNull PermissionActivity target) {
             ActivityCompat.requestPermissions(target, PERMISSION_TAKEPHOTO, REQUEST_TAKEPHOTO);
         }
 

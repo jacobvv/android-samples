@@ -5,6 +5,7 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.element.Modifier.STATIC;
 
 /**
@@ -36,6 +38,9 @@ class PermissionRequestSet {
     private final CodeBlock callRationaleCode;
     private final CodeBlock callDeniedCode;
 
+    private final ClassName nonNull;
+    private final ClassName permissionUtils;
+
     private PermissionRequestSet(TypeName targetTypeName, int requestCode, String[] permissions, MethodInfo method,
                                  MethodInfo rationale, MethodInfo permissionDenied) {
         this.targetTypeName = targetTypeName;
@@ -50,6 +55,9 @@ class PermissionRequestSet {
         this.fieldPermissions = Constants.VAR_PERMISSIONS_PREFIX + name.toUpperCase();
         this.classNameOfRequest = Character.toUpperCase(name.charAt(0)) + name.substring(1) +
                 Constants.TYPE_REQUEST_SUFFIX;
+
+        this.nonNull = ClassName.get(Constants.ANNOTATION_PACKAGE, Constants.TYPE_NONNULL);
+        this.permissionUtils = ClassName.get(Constants.PERMISSION_PACKAGE, Constants.TYPE_UTILS);
 
         this.requestPermission = CodeBlock.builder()
                 .add("$T.$N($N, $N, $N)",
@@ -101,9 +109,6 @@ class PermissionRequestSet {
     }
 
     MethodSpec createMethodWithCheck() {
-        ClassName nonNull = ClassName.get(Constants.ANNOTATION_PACKAGE, Constants.TYPE_NONNULL);
-        ClassName permissionUtils = ClassName.get(Constants.PERMISSION_PACKAGE, Constants.TYPE_UTILS);
-
         CodeBlock.Builder statementBuilder = CodeBlock.builder()
                 .addStatement("$T<$T> $L = $T.$N($N, $N)",
                         List.class, String.class, Constants.VAR_DENIED_FOREVER, permissionUtils,
@@ -142,7 +147,50 @@ class PermissionRequestSet {
     }
 
     TypeSpec createInterfaceRequest() {
-        return null;
+        ClassName typeName = ClassName.get(
+                Constants.PERMISSION_ANNOTATION_PACKAGE, Constants.TYPE_REQUEST);
+
+        ParameterizedTypeName name = ParameterizedTypeName.get(typeName, targetTypeName);
+        ParameterizedTypeName list = ParameterizedTypeName.get(List.class, String.class);
+
+        FieldSpec denied = FieldSpec.builder(list, Constants.VAR_DENIED, PRIVATE, FINAL).build();
+        FieldSpec deniedForever = FieldSpec.builder(list, Constants.VAR_DENIED_FOREVER,
+                PRIVATE, FINAL).build();
+
+        MethodSpec constructor = MethodSpec.constructorBuilder()
+                .addModifiers(PRIVATE)
+                .addParameter(ParameterSpec.builder(list, Constants.VAR_DENIED)
+                        .addAnnotation(nonNull).build())
+                .addParameter(ParameterSpec.builder(list, Constants.VAR_DENIED_FOREVER)
+                        .addAnnotation(nonNull).build())
+                .addStatement("this.$N = $N", Constants.VAR_DENIED, Constants.VAR_DENIED)
+                .addStatement("this.$N = $N", Constants.VAR_DENIED_FOREVER, Constants.VAR_DENIED_FOREVER)
+                .build();
+
+        MethodSpec proceed = MethodSpec.methodBuilder(Constants.METHOD_PROCEED)
+                .addModifiers(PUBLIC)
+                .addAnnotation(Override.class)
+                .addParameter(ParameterSpec.builder(targetTypeName, Constants.VAR_TARGET)
+                        .addAnnotation(nonNull).build())
+                .addStatement(requestPermission)
+                .build();
+        MethodSpec.Builder cancelBuilder = MethodSpec.methodBuilder(Constants.METHOD_CANCEL)
+                .addModifiers(PUBLIC)
+                .addAnnotation(Override.class);
+        if (permissionDenied != null) {
+            cancelBuilder.addStatement(callDeniedCode);
+        }
+        MethodSpec cancel = cancelBuilder.build();
+
+        return TypeSpec.classBuilder(classNameOfRequest)
+                .addModifiers(PRIVATE, STATIC, FINAL)
+                .addSuperinterface(name)
+                .addField(denied)
+                .addField(deniedForever)
+                .addMethod(constructor)
+                .addMethod(proceed)
+                .addMethod(cancel)
+                .build();
     }
 
     CodeBlock createSwitchCase() {
@@ -167,11 +215,11 @@ class PermissionRequestSet {
                     rationale, permissionDenied);
         }
 
-        public boolean hasMethodBinding() {
+        boolean hasMethodBinding() {
             return method != null;
         }
 
-        public void addMethodBinding(String[] permissions, MethodInfo method) {
+        void addMethodBinding(String[] permissions, MethodInfo method) {
             this.permissions = permissions;
             this.method = method;
         }

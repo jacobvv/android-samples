@@ -1,4 +1,4 @@
-package org.jacobvv.permission.annotaion;
+package org.jacobvv.permission.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

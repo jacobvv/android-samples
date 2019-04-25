@@ -8,7 +8,7 @@ import com.squareup.javapoet.TypeName;
  * @author jacob
  * @date 19-4-25
  */
-public class ParameterInfo {
+class ParameterInfo {
 
     private final int position;
     private final TypeName type;
@@ -26,7 +26,7 @@ public class ParameterInfo {
         return type;
     }
 
-    public boolean requiresCast(String toType) {
+    boolean requiresCast(String toType) {
         return !type.toString().equals(toType);
     }
 }
