@@ -12,5 +12,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
 public @interface OnPermissionDenied {
+    /**
+     * Request code for permission request.
+     *
+     * @return request code
+     */
     int value() default 0;
 }

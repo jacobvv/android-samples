@@ -3,11 +3,9 @@ package org.jacobvv.androidsamples.permission;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-
 import org.jacobvv.permission.PermissionUtils;
 import org.jacobvv.permission.annotaion.PermissionRequest;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -29,6 +27,7 @@ final class PermissionActivity_PermissionHelper {
                     PERMISSION_TAKEPHOTO);
             if (!permissionsRationale.isEmpty()) {
                 permissionsDenied.removeAll(permissionsRationale);
+                TakePhoto_PermissionRequest request = new TakePhoto_PermissionRequest(permissionsDenied, permissionsRationale);
                 // TODO: Show rationale if necessary.
             } else {
                 ActivityCompat.requestPermissions(target, PERMISSION_TAKEPHOTO, REQUEST_TAKEPHOTO);
@@ -55,32 +54,25 @@ final class PermissionActivity_PermissionHelper {
         }
     }
 
-    private static final class TakePhoto_PermissionRequest implements PermissionRequest {
-        private final WeakReference<PermissionActivity> weakTarget;
+    private static final class TakePhoto_PermissionRequest
+            implements PermissionRequest<PermissionActivity> {
         private final List<String> permissionsDenied;
         private final List<String> permissionsRationale;
-        private TakePhoto_PermissionRequest(@NonNull PermissionActivity target,
-                                            @NonNull List<String> permissionsDenied,
+
+        private TakePhoto_PermissionRequest(@NonNull List<String> permissionsDenied,
                                             @NonNull List<String> permissionsRationale) {
-            this.weakTarget = new WeakReference<>(target);
             this.permissionsDenied = permissionsDenied;
             this.permissionsRationale = permissionsRationale;
         }
 
         @Override
-        public void proceed() {
-            PermissionActivity target = weakTarget.get();
-            if (target != null) {
-                ActivityCompat.requestPermissions(target, PERMISSION_TAKEPHOTO, REQUEST_TAKEPHOTO);
-            }
+        public void proceed(PermissionActivity target) {
+            ActivityCompat.requestPermissions(target, PERMISSION_TAKEPHOTO, REQUEST_TAKEPHOTO);
         }
 
         @Override
-        public void cancel() {
-            PermissionActivity target = weakTarget.get();
-            if (target != null) {
-                // TODO: Callback permissions denied if necessary.
-            }
+        public void cancel(PermissionActivity target) {
+            // TODO: Callback permissions denied if necessary.
         }
     }
 
