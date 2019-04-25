@@ -25,7 +25,7 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_take_photo:
-                PermissionActivity_PermissionHelperDemo.takePhoto_WithPermissionCheck(this);
+                PermissionActivity_PermissionHelper.takePhoto_WithCheck(this);
                 break;
             default:
         }
@@ -35,7 +35,7 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionActivity_PermissionHelperDemo.onRequestPermissionsResult(this, requestCode,
+        PermissionActivity_PermissionHelper.onRequestPermissionsResult(this, requestCode,
                 permissions, grantResults);
     }
 

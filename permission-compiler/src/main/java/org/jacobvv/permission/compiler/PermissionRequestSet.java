@@ -194,7 +194,25 @@ class PermissionRequestSet {
     }
 
     CodeBlock createSwitchCase() {
-        return null;
+        CodeBlock.Builder caseBuilder = CodeBlock.builder()
+                .add("case $L:\n", requestCode)
+                .indent()
+                .beginControlFlow("if ($L.$N())",
+                        Constants.VAR_DENIED_FOREVER, Constants.METHOD_ISEMPTY)
+                .addStatement(callTargetCode);
+        if (permissionDenied != null) {
+            caseBuilder.nextControlFlow("else")
+                    .addStatement("$T<$T> $L = $T.$N($N, $N)", List.class, String.class,
+                            Constants.VAR_DENIED, permissionUtils, Constants.METHOD_SHOULD_RATIONALE,
+                            Constants.VAR_TARGET, Constants.VAR_DENIED_FOREVER)
+                    .addStatement("$L.$N($N)", Constants.VAR_DENIED_FOREVER,
+                            Constants.METHOD_REMOVEALL, Constants.VAR_DENIED)
+                    .addStatement(callDeniedCode);
+        }
+        return caseBuilder.endControlFlow()
+                .addStatement("break")
+                .unindent()
+                .build();
     }
 
     static final class Builder {

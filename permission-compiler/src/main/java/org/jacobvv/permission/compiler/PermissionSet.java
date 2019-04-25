@@ -91,7 +91,7 @@ class PermissionSet {
                     .addField(request.createFieldPermissions())
                     .addMethod(request.createMethodWithCheck())
                     .addType(request.createInterfaceRequest());
-//            switchBuilder.add(request.createSwitchCase());
+            switchBuilder.add(request.createSwitchCase());
         }
 
         CodeBlock switchCode = switchBuilder.add("default:\n").endControlFlow().build();
