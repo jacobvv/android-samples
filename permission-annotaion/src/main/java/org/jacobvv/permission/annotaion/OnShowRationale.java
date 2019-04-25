@@ -7,11 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * @author jacob
- * @date 19-4-22
+ * @date 19-4-25
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface RequiresPermission {
-    String[] value();
-    int requestCode() default 0;
+public @interface OnShowRationale {
 }

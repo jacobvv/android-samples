@@ -71,5 +71,9 @@ public class PermissionSet {
             }
             return new PermissionSet(targetTypeName, permissionClassName, requests.build());
         }
+
+        public boolean addMethod(int requestCode, String[] permissions, MethodInfo method) {
+            return false;
+        }
     }
 }

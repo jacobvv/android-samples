@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * @date 19-4-22
  */
 @Target(ElementType.METHOD)
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.SOURCE)
 public @interface OnPermissionDenied {
     int value() default 0;
 }
