@@ -176,7 +176,9 @@ class PermissionRequestSet {
                 .build();
         MethodSpec.Builder cancelBuilder = MethodSpec.methodBuilder(Constants.METHOD_CANCEL)
                 .addModifiers(PUBLIC)
-                .addAnnotation(Override.class);
+                .addAnnotation(Override.class)
+                .addParameter(ParameterSpec.builder(targetTypeName, Constants.VAR_TARGET)
+                        .addAnnotation(nonNull).build());
         if (permissionDenied != null) {
             cancelBuilder.addStatement(callDeniedCode);
         }

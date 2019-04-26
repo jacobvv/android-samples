@@ -34,6 +34,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.tools.Diagnostic;
@@ -136,7 +137,7 @@ public class PermissionProcessor extends AbstractProcessor {
             Element element, Map<TypeElement, PermissionSet.Builder> builderMap) throws Exception {
         TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
         // Verify that the method and its containing class are accessible via generated code.
-        if (isMethodAnnotationInvalid(element, enclosingElement, RequiresPermission.class)
+        if (isMethodSignatureInvalid(element, enclosingElement, RequiresPermission.class)
                 || isAccessibleInvalid(element, enclosingElement, RequiresPermission.class)
                 || isPackageInvalid(element, enclosingElement, RequiresPermission.class)) {
             return;
@@ -147,13 +148,11 @@ public class PermissionProcessor extends AbstractProcessor {
         Annotation annotation = element.getAnnotation(RequiresPermission.class);
         Method annotationValue = RequiresPermission.class.getDeclaredMethod("value");
         if (annotationValue.getReturnType() != String[].class) {
-            throw new IllegalStateException(
-                    "@RequiresPermission annotation value() type not String[].");
+            throw new IllegalStateException("@RequiresPermission annotation value() type not String[].");
         }
         Method annotationRequestCode = RequiresPermission.class.getDeclaredMethod("requestCode");
         if (annotationRequestCode.getReturnType() != int.class) {
-            throw new IllegalStateException(
-                    "@RequiresPermission annotation requestCode() type not int.");
+            throw new IllegalStateException("@RequiresPermission annotation requestCode() type not int.");
         }
 
         String[] permissions = (String[]) annotationValue.invoke(annotation);
@@ -165,6 +164,7 @@ public class PermissionProcessor extends AbstractProcessor {
         if (!methodParameters.isEmpty()) {
             for (int i = 0; i < methodParameters.size(); i++) {
                 VariableElement methodParameter = methodParameters.get(i);
+                // TODO: Add multi parameters support, include generic type, type with generic type, type with annotations, etc.
                 TypeMirror methodParameterType = methodParameter.asType();
                 if (methodParameterType instanceof TypeVariable) {
                     TypeVariable typeVariable = (TypeVariable) methodParameterType;
@@ -188,7 +188,6 @@ public class PermissionProcessor extends AbstractProcessor {
 
     private void parsePermissionDeniedCallback(
             Element element, Map<TypeElement, PermissionSet.Builder> builderMap) throws Exception {
-
     }
 
     private PermissionSet.Builder getOrCreateBindingBuilder(
@@ -201,11 +200,20 @@ public class PermissionProcessor extends AbstractProcessor {
         return builder;
     }
 
-    private boolean isMethodAnnotationInvalid(Element element, TypeElement enclosingElement,
-                                              Class<? extends Annotation> annotation) {
+    private boolean isMethodSignatureInvalid(Element element, TypeElement enclosingElement,
+                                             Class<? extends Annotation> annotation) {
         // This should be guarded by the annotation's @Target but it's worth a check for safe casting.
         if (!(element instanceof ExecutableElement) || element.getKind() != METHOD) {
             error(element, "@%s annotation must be on a method. (%s.%s)",
+                    annotation.getSimpleName(), enclosingElement.getQualifiedName(),
+                    element.getSimpleName());
+            return true;
+        }
+
+        // Verify method return type matches the listener.
+        TypeMirror returnType = ((ExecutableElement) element).getReturnType();
+        if (returnType.getKind() != TypeKind.VOID) {
+            error(element, "@%s methods must return type 'void'. (%s.%s)",
                     annotation.getSimpleName(), enclosingElement.getQualifiedName(),
                     element.getSimpleName());
             return true;
@@ -288,7 +296,6 @@ public class PermissionProcessor extends AbstractProcessor {
         for (Class<? extends Annotation> annotation : ANNOTATIONS) {
             types.add(annotation.getCanonicalName());
         }
-        types.add(RequiresPermission.class.getCanonicalName());
         return types;
     }
 }

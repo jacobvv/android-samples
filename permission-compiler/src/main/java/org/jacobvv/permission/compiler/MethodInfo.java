@@ -36,4 +36,13 @@ class MethodInfo {
     ParameterInfo getReturnValue() {
         return returnValue;
     }
+
+    @Override
+    public String toString() {
+        return "MethodInfo{" +
+                "name='" + name + '\'' +
+                ", parameters=" + parameters +
+                ", returnValue=" + returnValue +
+                '}';
+    }
 }

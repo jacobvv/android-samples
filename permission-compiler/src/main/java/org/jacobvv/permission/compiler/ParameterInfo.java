@@ -29,4 +29,12 @@ class ParameterInfo {
     boolean requiresCast(String toType) {
         return !type.toString().equals(toType);
     }
+
+    @Override
+    public String toString() {
+        return "ParameterInfo{" +
+                "position=" + position +
+                ", type=" + type +
+                '}';
+    }
 }
