@@ -169,5 +169,25 @@ class PermissionSet {
             }
             return true;
         }
+
+        boolean addPermissionDeniedMethod(int requestCode, MethodInfo method) {
+            PermissionRequestSet.Builder targetRequest = requestsMap.get(requestCode);
+            if (defaultPermissionDenied != null
+                    || (targetRequest != null && targetRequest.hasPermissionDeniedBinding())) {
+                return false;
+            }
+            if (requestCode == 0) {
+                for (PermissionRequestSet.Builder request : requestsMap.values()) {
+                    if (request.hasPermissionDeniedBinding()) {
+                        return false;
+                    }
+                }
+                defaultPermissionDenied = method;
+            } else {
+                PermissionRequestSet.Builder request = getOrCreateRequest(requestCode);
+                request.addPermissionDeniedBinding(method);
+            }
+            return true;
+        }
     }
 }

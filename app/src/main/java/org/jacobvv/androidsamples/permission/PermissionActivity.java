@@ -31,7 +31,7 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_take_photo:
-                PermissionActivity_PermissionHelperDemo.takePhoto_WithCheck(this);
+                PermissionActivity_PermissionHelper.takePhoto_WithCheck(this);
                 break;
             default:
         }
@@ -41,7 +41,7 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionActivity_PermissionHelperDemo.onRequestPermissionsResult(this, requestCode,
+        PermissionActivity_PermissionHelper.onRequestPermissionsResult(this, requestCode,
                 permissions, grantResults);
     }
 
@@ -53,6 +53,16 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
 
     @OnShowRationale()
     public void takePhotoRationale(final PermissionRequest<PermissionActivity> request, List<String> permissions) {
+        showRationaleDialog(request, permissions);
+    }
+
+    @OnPermissionDenied()
+    public void takePhotoDenied(List<String> denied, List<String> deniedForever) {
+        Toast.makeText(this, "Request permissions denied.",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void showRationaleDialog(final PermissionRequest<PermissionActivity> request, List<String> permissions) {
         StringBuilder msgBuilder = new StringBuilder(getString(R.string.permission_rationale_msg));
         for (String permission : permissions) {
             msgBuilder.append("\n").append(permission);
@@ -72,9 +82,4 @@ public class PermissionActivity extends AppCompatActivity implements View.OnClic
         builder.create().show();
     }
 
-    @OnPermissionDenied()
-    public void takePhotoDenied(List<String> denied, List<String> deniedForever) {
-        Toast.makeText(this, "Request permissions denied.",
-                Toast.LENGTH_SHORT).show();
-    }
 }

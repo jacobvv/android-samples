@@ -3,7 +3,6 @@ package org.jacobvv.permission.compiler;
 import com.google.auto.common.SuperficialValidation;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeName;
 
 import org.jacobvv.permission.annotation.OnPermissionDenied;
 import org.jacobvv.permission.annotation.OnShowRationale;
@@ -15,7 +14,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -24,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -35,11 +32,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
-import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
 import static javax.lang.model.element.ElementKind.CLASS;
@@ -216,6 +210,32 @@ public class PermissionProcessor extends AbstractProcessor {
 
     private void parsePermissionDeniedCallback(
             Element element, Map<TypeElement, PermissionSet.Builder> builderMap) throws Exception {
+        TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
+        // Verify that the method and its containing class are accessible via generated code.
+        if (isMethodSignatureInvalid(element, enclosingElement, OnPermissionDenied.class)
+                || isAccessibleInvalid(element, enclosingElement, OnPermissionDenied.class)
+                || isPackageInvalid(element, enclosingElement, OnPermissionDenied.class)
+                || isPermissionDeniedParametersInvalid(element, enclosingElement)) {
+            return;
+        }
+        ExecutableElement executableElement = (ExecutableElement) element;
+
+        // Assemble information on the method.
+        Annotation annotation = element.getAnnotation(OnPermissionDenied.class);
+        Method annotationValue = OnPermissionDenied.class.getDeclaredMethod("value");
+        if (annotationValue.getReturnType() != int.class) {
+            throw new IllegalStateException("@OnPermissionDenied annotation value() type not int.");
+        }
+
+        int requestCode = (int) annotationValue.invoke(annotation);
+        String name = executableElement.getSimpleName().toString();
+
+        MethodInfo method = new MethodInfo(name);
+        PermissionSet.Builder builder = getOrCreateBindingBuilder(builderMap, enclosingElement);
+        if (!builder.addPermissionDeniedMethod(requestCode, method)) {
+            error(element, "Duplicate permission denied method in same Class. (%s.%s)",
+                    enclosingElement.getQualifiedName(), element.getSimpleName());
+        }
     }
 
     private PermissionSet.Builder getOrCreateBindingBuilder(
@@ -253,6 +273,28 @@ public class PermissionProcessor extends AbstractProcessor {
             error(element, "Type of @OnShowRationale method second parameter must be 'List<String>'. (%s.%s)",
                     enclosingElement.getQualifiedName(), element.getSimpleName());
             return true;
+        }
+        return false;
+    }
+
+    private boolean isPermissionDeniedParametersInvalid(Element element, TypeElement enclosingElement) {
+        List<? extends VariableElement> parameters = ((ExecutableElement) element).getParameters();
+        if (parameters.size() != 2) {
+            error(element, "@OnPermissionDenied method must have 2 parameters. (%s.%s)",
+                    enclosingElement.getQualifiedName(), element.getSimpleName());
+            return true;
+        }
+
+        // TODO: type check support subtype, generic type, type with generic type, type with annotations, etc.
+        for (VariableElement parameter : parameters) {
+            TypeMirror type = parameter.asType();
+            String expectType = String.format("%s<%s>", List.class.getName(), String.class.getName());
+            if (!expectType.equals(type.toString())) {
+                error(element, "Type of @OnPermissionDenied method parameters must both be '%s<%s>'. (%s.%s)",
+                        PermissionRequest.class.getSimpleName(), enclosingElement.getSimpleName(),
+                        enclosingElement.getQualifiedName(), element.getSimpleName());
+                return true;
+            }
         }
         return false;
     }

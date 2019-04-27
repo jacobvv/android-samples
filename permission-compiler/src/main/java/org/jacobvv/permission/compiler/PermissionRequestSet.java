@@ -206,9 +206,10 @@ class PermissionRequestSet {
                 .addStatement(callTargetCode);
         if (permissionDenied != null) {
             caseBuilder.nextControlFlow("else")
-                    .addStatement("$T<$T> $L = $T.$N($N, $N)", List.class, String.class,
-                            Constants.VAR_DENIED, permissionUtils, Constants.METHOD_SHOULD_RATIONALE,
-                            Constants.VAR_TARGET, Constants.VAR_DENIED_FOREVER)
+                    .addStatement("$T<$T> $L = $T.$N($N, $N.toArray(new $T[0]))",
+                            List.class, String.class, Constants.VAR_DENIED,
+                            permissionUtils, Constants.METHOD_SHOULD_RATIONALE,
+                            Constants.VAR_TARGET, Constants.VAR_DENIED_FOREVER, String.class)
                     .addStatement("$L.$N($N)", Constants.VAR_DENIED_FOREVER,
                             Constants.METHOD_REMOVEALL, Constants.VAR_DENIED)
                     .addStatement(callDeniedCode);
@@ -245,6 +246,10 @@ class PermissionRequestSet {
             return rationale != null;
         }
 
+        boolean hasPermissionDeniedBinding() {
+            return permissionDenied != null;
+        }
+
         void addMethodBinding(String[] permissions, MethodInfo method) {
             this.permissions = permissions;
             this.method = method;
@@ -257,5 +262,6 @@ class PermissionRequestSet {
         void addPermissionDeniedBinding(MethodInfo methodDenied) {
             this.permissionDenied = methodDenied;
         }
+
     }
 }
