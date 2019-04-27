@@ -106,6 +106,9 @@ class PermissionSet {
 
         private final Map<Integer, PermissionRequestSet.Builder> requestsMap = new HashMap<>();
 
+        private MethodInfo defaultRationale;
+        private MethodInfo defaultPermissionDenied;
+
         private Builder(TypeName targetTypeName, ClassName permissionClassName) {
             this.targetTypeName = targetTypeName;
             this.permissionClassName = permissionClassName;
@@ -123,6 +126,12 @@ class PermissionSet {
         PermissionSet build() {
             ImmutableList.Builder<PermissionRequestSet> requests = ImmutableList.builder();
             for (PermissionRequestSet.Builder builder : requestsMap.values()) {
+                if (defaultRationale != null) {
+                    builder.addRationaleBinding(defaultRationale);
+                }
+                if (defaultPermissionDenied != null) {
+                    builder.addPermissionDeniedBinding(defaultPermissionDenied);
+                }
                 requests.add(builder.build());
             }
             return new PermissionSet(targetTypeName, permissionClassName, requests.build());
@@ -141,5 +150,24 @@ class PermissionSet {
             return true;
         }
 
+        boolean addShowRationaleMethod(int requestCode, MethodInfo method) {
+            PermissionRequestSet.Builder targetRequest = requestsMap.get(requestCode);
+            if (defaultRationale != null
+                    || (targetRequest != null && targetRequest.hasRationaleBinding())) {
+                return false;
+            }
+            if (requestCode == 0) {
+                for (PermissionRequestSet.Builder request : requestsMap.values()) {
+                    if (request.hasRationaleBinding()) {
+                        return false;
+                    }
+                }
+                defaultRationale = method;
+            } else {
+                PermissionRequestSet.Builder request = getOrCreateRequest(requestCode);
+                request.addRationaleBinding(method);
+            }
+            return true;
+        }
     }
 }

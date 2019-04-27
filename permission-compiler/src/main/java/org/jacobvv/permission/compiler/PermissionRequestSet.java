@@ -71,7 +71,8 @@ class PermissionRequestSet {
 
         if (rationale != null) {
             this.callRationaleCode = CodeBlock.builder()
-                    .add("$L.$N()", Constants.VAR_TARGET, rationale.getName())
+                    .add("$L.$N($N, $N)", Constants.VAR_TARGET, rationale.getName(),
+                            Constants.VAR_REQUEST, Constants.VAR_DENIED)
                     .build();
         } else {
             this.callRationaleCode = null;
@@ -79,7 +80,8 @@ class PermissionRequestSet {
 
         if (permissionDenied != null) {
             this.callDeniedCode = CodeBlock.builder()
-                    .add("$L.$N()", Constants.VAR_TARGET, permissionDenied.getName())
+                    .add("$L.$N($N, $N)", Constants.VAR_TARGET, permissionDenied.getName(),
+                            Constants.VAR_DENIED, Constants.VAR_DENIED_FOREVER)
                     .build();
         } else {
             this.callDeniedCode = null;
@@ -126,7 +128,7 @@ class PermissionRequestSet {
                             Constants.VAR_DENIED, Constants.METHOD_ISEMPTY)
                     .addStatement("$L.$N($N)", Constants.VAR_DENIED_FOREVER,
                             Constants.METHOD_REMOVEALL, Constants.VAR_DENIED)
-                    .addStatement("$T $L = new $T($N, $N)",
+                    .addStatement("$N $L = new $N($N, $N)",
                             classNameOfRequest, Constants.VAR_REQUEST, classNameOfRequest,
                             Constants.VAR_DENIED, Constants.VAR_DENIED_FOREVER)
                     .addStatement(callRationaleCode)
@@ -239,9 +241,21 @@ class PermissionRequestSet {
             return method != null;
         }
 
+        boolean hasRationaleBinding() {
+            return rationale != null;
+        }
+
         void addMethodBinding(String[] permissions, MethodInfo method) {
             this.permissions = permissions;
             this.method = method;
+        }
+
+        void addRationaleBinding(MethodInfo methodRationale) {
+            this.rationale = methodRationale;
+        }
+
+        void addPermissionDeniedBinding(MethodInfo methodDenied) {
+            this.permissionDenied = methodDenied;
         }
     }
 }

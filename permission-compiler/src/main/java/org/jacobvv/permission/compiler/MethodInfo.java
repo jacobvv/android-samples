@@ -1,5 +1,7 @@
 package org.jacobvv.permission.compiler;
 
+import com.squareup.javapoet.TypeName;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,17 +13,25 @@ import java.util.List;
 class MethodInfo {
     private final String name;
     private final List<ParameterInfo> parameters;
-    private final ParameterInfo returnValue;
+    private final TypeName returnValue;
 
-    MethodInfo(String name, List<ParameterInfo> parameters) {
-        this(name, parameters, null);
+    MethodInfo(String name) {
+        this(name, TypeName.VOID);
     }
 
-    MethodInfo(String name, List<ParameterInfo> parameters, ParameterInfo returnValue) {
-        ArrayList<ParameterInfo> params = new ArrayList<>(parameters);
-        params.sort((p0, p1) -> p0.getPosition() - p1.getPosition());
+    MethodInfo(String name, TypeName returnValue) {
+        this(name, returnValue, null);
+    }
+
+    MethodInfo(String name, TypeName returnValue, List<ParameterInfo> parameters) {
+        if (parameters != null) {
+            ArrayList<ParameterInfo> params = new ArrayList<>(parameters);
+            params.sort((p0, p1) -> p0.getPosition() - p1.getPosition());
+            this.parameters = Collections.unmodifiableList(params);
+        } else {
+            this.parameters = Collections.emptyList();
+        }
         this.name = name;
-        this.parameters = Collections.unmodifiableList(params);
         this.returnValue = returnValue;
     }
 
@@ -33,7 +43,7 @@ class MethodInfo {
         return parameters;
     }
 
-    ParameterInfo getReturnValue() {
+    TypeName getReturnValue() {
         return returnValue;
     }
 

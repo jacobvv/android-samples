@@ -7,6 +7,7 @@ import com.squareup.javapoet.TypeName;
 
 import org.jacobvv.permission.annotation.OnPermissionDenied;
 import org.jacobvv.permission.annotation.OnShowRationale;
+import org.jacobvv.permission.annotation.PermissionRequest;
 import org.jacobvv.permission.annotation.RequiresPermission;
 
 import java.io.IOException;
@@ -34,9 +35,11 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
+import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
 import static javax.lang.model.element.ElementKind.CLASS;
@@ -54,12 +57,9 @@ public class PermissionProcessor extends AbstractProcessor {
             OnShowRationale.class
     );
 
-    private Filer filer;
-
     @Override
-    public synchronized void init(ProcessingEnvironment env) {
-        super.init(env);
-        filer = env.getFiler();
+    public synchronized void init(ProcessingEnvironment processingEnvironment) {
+        super.init(processingEnvironment);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class PermissionProcessor extends AbstractProcessor {
 
             JavaFile javaFile = permission.brewJava();
             try {
-                javaFile.writeTo(filer);
+                javaFile.writeTo(processingEnv.getFiler());
             } catch (IOException e) {
                 error(typeElement, "Unable to write binding for type %s: %s", typeElement, e.getMessage());
             }
@@ -139,7 +139,9 @@ public class PermissionProcessor extends AbstractProcessor {
         // Verify that the method and its containing class are accessible via generated code.
         if (isMethodSignatureInvalid(element, enclosingElement, RequiresPermission.class)
                 || isAccessibleInvalid(element, enclosingElement, RequiresPermission.class)
-                || isPackageInvalid(element, enclosingElement, RequiresPermission.class)) {
+                || isPackageInvalid(element, enclosingElement, RequiresPermission.class)
+                || ((ExecutableElement) element).getParameters().size() != 0) {
+            // TODO: Add multi parameters support. now method must have no parameters.
             return;
         }
         ExecutableElement executableElement = (ExecutableElement) element;
@@ -159,22 +161,22 @@ public class PermissionProcessor extends AbstractProcessor {
         int requestCode = (int) annotationRequestCode.invoke(annotation);
         String name = executableElement.getSimpleName().toString();
 
-        List<? extends VariableElement> methodParameters = executableElement.getParameters();
-        List<ParameterInfo> parameters = new ArrayList<>(methodParameters.size());
-        if (!methodParameters.isEmpty()) {
-            for (int i = 0; i < methodParameters.size(); i++) {
-                VariableElement methodParameter = methodParameters.get(i);
-                // TODO: Add multi parameters support, include generic type, type with generic type, type with annotations, etc.
-                TypeMirror methodParameterType = methodParameter.asType();
-                if (methodParameterType instanceof TypeVariable) {
-                    TypeVariable typeVariable = (TypeVariable) methodParameterType;
-                    methodParameterType = typeVariable.getUpperBound();
-                }
-                parameters.add(new ParameterInfo(i, TypeName.get(methodParameterType)));
-            }
-        }
+        // TODO: Add multi parameters support. now parameters ignored.
+//        List<? extends VariableElement> methodParameters = executableElement.getParameters();
+//        List<ParameterInfo> parameters = new ArrayList<>(methodParameters.size());
+//        if (!methodParameters.isEmpty()) {
+//            for (int i = 0; i < methodParameters.size(); i++) {
+//                VariableElement methodParameter = methodParameters.get(i);
+//                TypeMirror methodParameterType = methodParameter.asType();
+//                if (methodParameterType instanceof TypeVariable) {
+//                    TypeVariable typeVariable = (TypeVariable) methodParameterType;
+//                    methodParameterType = typeVariable.getUpperBound();
+//                }
+//                parameters.add(new ParameterInfo(i, TypeName.get(methodParameterType)));
+//            }
+//        }
 
-        MethodInfo method = new MethodInfo(name, parameters); // Return value is ignored.
+        MethodInfo method = new MethodInfo(name); // Return value is ignored.
         PermissionSet.Builder builder = getOrCreateBindingBuilder(builderMap, enclosingElement);
         if (!builder.addPermissionRequestMethod(requestCode, permissions, method)) {
             error(element, "Duplicate permission request code in same Class. (%s.%s)",
@@ -184,6 +186,32 @@ public class PermissionProcessor extends AbstractProcessor {
 
     private void parseRationaleCallback(
             Element element, Map<TypeElement, PermissionSet.Builder> builderMap) throws Exception {
+        TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
+        // Verify that the method and its containing class are accessible via generated code.
+        if (isMethodSignatureInvalid(element, enclosingElement, OnShowRationale.class)
+                || isAccessibleInvalid(element, enclosingElement, OnShowRationale.class)
+                || isPackageInvalid(element, enclosingElement, OnShowRationale.class)
+                || isRationaleParametersInvalid(element, enclosingElement)) {
+            return;
+        }
+        ExecutableElement executableElement = (ExecutableElement) element;
+
+        // Assemble information on the method.
+        Annotation annotation = element.getAnnotation(OnShowRationale.class);
+        Method annotationValue = OnShowRationale.class.getDeclaredMethod("value");
+        if (annotationValue.getReturnType() != int.class) {
+            throw new IllegalStateException("@OnShowRationale annotation value() type not int.");
+        }
+
+        int requestCode = (int) annotationValue.invoke(annotation);
+        String name = executableElement.getSimpleName().toString();
+
+        MethodInfo method = new MethodInfo(name);
+        PermissionSet.Builder builder = getOrCreateBindingBuilder(builderMap, enclosingElement);
+        if (!builder.addShowRationaleMethod(requestCode, method)) {
+            error(element, "Duplicate rationale method in same Class. (%s.%s)",
+                    enclosingElement.getQualifiedName(), element.getSimpleName());
+        }
     }
 
     private void parsePermissionDeniedCallback(
@@ -198,6 +226,35 @@ public class PermissionProcessor extends AbstractProcessor {
             builderMap.put(enclosingElement, builder);
         }
         return builder;
+    }
+
+    private boolean isRationaleParametersInvalid(Element element, TypeElement enclosingElement) {
+        List<? extends VariableElement> parameters = ((ExecutableElement) element).getParameters();
+        if (parameters.size() != 2) {
+            error(element, "@OnShowRationale method must have 2 parameters. (%s.%s)",
+                    enclosingElement.getQualifiedName(), element.getSimpleName());
+            return true;
+        }
+
+        // TODO: type check support subtype, generic type, type with generic type, type with annotations, etc.
+        TypeMirror first = parameters.get(0).asType();
+        String expectType = String.format("%s<%s>",
+                PermissionRequest.class.getName(), enclosingElement.asType().toString());
+        if (!expectType.equals(first.toString())) {
+            error(element, "Type of @OnShowRationale method first parameter must be '%s<%s>'. (%s.%s)",
+                    PermissionRequest.class.getSimpleName(), enclosingElement.getSimpleName(),
+                    enclosingElement.getQualifiedName(), element.getSimpleName());
+            return true;
+        }
+
+        TypeMirror second = parameters.get(1).asType();
+        expectType = String.format("%s<%s>", List.class.getName(), String.class.getName());
+        if (!expectType.equals(second.toString())) {
+            error(element, "Type of @OnShowRationale method second parameter must be 'List<String>'. (%s.%s)",
+                    enclosingElement.getQualifiedName(), element.getSimpleName());
+            return true;
+        }
+        return false;
     }
 
     private boolean isMethodSignatureInvalid(Element element, TypeElement enclosingElement,
