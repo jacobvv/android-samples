@@ -18,7 +18,7 @@ public class ImageType extends ItemType<Image, BaseViewHolder<Image>> {
 
     @Override
     public int getLayoutId(int type) {
-        return R.layout.item_cursor_image_check;
+        return R.layout.recycler_item_cursor_image_check;
     }
 
     @Override

@@ -15,7 +15,7 @@ public class CameraType extends ItemType<Camera, BaseViewHolder<Camera>> {
 
     @Override
     public int getLayoutId(int type) {
-        return R.layout.item_cursor_image;
+        return R.layout.recycler_item_cursor_image;
     }
 
     @Override

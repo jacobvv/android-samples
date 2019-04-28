@@ -17,7 +17,7 @@ public class AbstractType extends ItemType<Abstract, BaseViewHolder<Abstract>> {
 
     @Override
     public int getLayoutId(int type) {
-        return R.layout.item_multi_abstract;
+        return R.layout.recycler_item_multi_abstract;
     }
 
     @Override

@@ -27,7 +27,7 @@ public class RecyclerActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler);
+        setContentView(R.layout.recycler_activity_main);
 
         mItems.add("Single type list.");
         mItems.add("Multi type list.");

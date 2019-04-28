@@ -26,7 +26,7 @@ public class GroupType extends ItemType<Group, GroupViewHolder> {
 
     @Override
     public int getLayoutId(int type) {
-        return R.layout.item_multi_list;
+        return R.layout.recycler_item_multi_list;
     }
 
     @NonNull
@@ -78,7 +78,7 @@ public class GroupType extends ItemType<Group, GroupViewHolder> {
 
         @Override
         public int getLayoutId(int type) {
-            return R.layout.item_multi_list_item;
+            return R.layout.recycler_item_multi_list_item;
         }
 
         @Override

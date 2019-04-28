@@ -26,7 +26,7 @@ public class SingleTypeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_type);
+        setContentView(R.layout.recycler_activity_single_type);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,7 +70,7 @@ public class SingleTypeActivity extends AppCompatActivity {
 
         @Override
         public int getLayoutId(int type) {
-            return R.layout.item_single;
+            return R.layout.recycler_item_single;
         }
 
         @Override

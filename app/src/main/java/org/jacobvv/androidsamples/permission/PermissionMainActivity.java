@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples;
+package org.jacobvv.androidsamples.permission;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,21 +8,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.jacobvv.androidsamples.R;
 import org.jacobvv.androidsamples.databus.ActivityA;
-import org.jacobvv.androidsamples.permission.PermissionMainActivity;
 import org.jacobvv.androidsamples.recycler.RecyclerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class PermissionMainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private List<String> mItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.permission_activity_main);
 
         mItems.add("DataBus Sample");
         mItems.add("BaseRecyclerView Sample");
@@ -51,4 +51,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         startActivity(i);
     }
+
 }

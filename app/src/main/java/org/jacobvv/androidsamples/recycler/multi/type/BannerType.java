@@ -16,7 +16,7 @@ public class BannerType extends ItemType<Banner, BaseViewHolder<Banner>> {
 
     @Override
     public int getLayoutId(int type) {
-        return R.layout.item_multi_banner;
+        return R.layout.recycler_item_multi_banner;
     }
 
     @Override

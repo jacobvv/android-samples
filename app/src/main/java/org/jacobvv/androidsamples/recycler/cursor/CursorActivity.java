@@ -29,7 +29,7 @@ public class CursorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cursor);
+        setContentView(R.layout.recycler_activity_cursor);
         CameraType cameraType = new CameraType();
         cameraType.setOnItemClickListener(new OnItemClickListener<Camera>() {
             @Override
