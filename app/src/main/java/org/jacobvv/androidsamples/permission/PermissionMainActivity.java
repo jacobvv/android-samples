@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.jacobvv.androidsamples.R;
-import org.jacobvv.androidsamples.databus.ActivityA;
-import org.jacobvv.androidsamples.recycler.RecyclerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +22,9 @@ public class PermissionMainActivity extends AppCompatActivity implements Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.permission_activity_main);
 
-        mItems.add("DataBus Sample");
-        mItems.add("BaseRecyclerView Sample");
-        mItems.add("Runtime permission Sample");
+        mItems.add("Simple Sample.");
+        mItems.add("Multi permissions Sample.");
+        mItems.add("Common callback Sample.");
 
         ListView listView = findViewById(R.id.lv_list);
         listView.setAdapter(new ArrayAdapter<>(this,
@@ -39,13 +37,13 @@ public class PermissionMainActivity extends AppCompatActivity implements Adapter
         Intent i = new Intent();
         switch (position) {
             case 0:
-                i.setClass(this, ActivityA.class);
+                i.setClass(this, SimpleActivity.class);
                 break;
             case 1:
-                i.setClass(this, RecyclerActivity.class);
+                i.setClass(this, MultiActivity.class);
                 break;
             case 2:
-                i.setClass(this, PermissionMainActivity.class);
+                i.setClass(this, CommonActivity.class);
                 break;
             default:
         }

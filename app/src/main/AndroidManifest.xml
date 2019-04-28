@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".permission.SimpleActivity"></activity>
+        <activity android:name=".permission.CommonActivity"></activity>
+        <activity android:name=".permission.MultiActivity" />
+        <activity android:name=".permission.SimpleActivity" />
         <activity android:name=".permission.PermissionMainActivity" />
         <activity android:name=".recycler.cursor.CursorActivity" />
         <activity android:name=".recycler.multi.MultiTypeActivity" />

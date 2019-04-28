@@ -9,4 +9,9 @@
     <string name="permission_rationale_msg">We need some permissions to continue:</string>
     <string name="permission_rationale_proceed">Proceed</string>
     <string name="permission_rationale_cancel">Cancel</string>
+    <string name="permission_log_granted">Granted</string>
+    <string name="permission_log_denied">Denied</string>
+    <string name="permission_log_denied_no_forever">Denied</string>
+    <string name="permission_log_denied_forever">Denied Forever</string>
+    <string name="permission_log_none">None</string>
 </resources>

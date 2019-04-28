@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface RequiresPermission {
+public @interface RequestPermission {
     String[] value();
     int requestCode() default 0;
 }

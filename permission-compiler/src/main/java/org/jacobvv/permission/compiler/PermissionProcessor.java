@@ -7,7 +7,7 @@ import com.squareup.javapoet.JavaFile;
 import org.jacobvv.permission.annotation.OnPermissionDenied;
 import org.jacobvv.permission.annotation.OnShowRationale;
 import org.jacobvv.permission.annotation.PermissionRequest;
-import org.jacobvv.permission.annotation.RequiresPermission;
+import org.jacobvv.permission.annotation.RequestPermission;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,7 +46,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 public class PermissionProcessor extends AbstractProcessor {
 
     private static final List<Class<? extends Annotation>> ANNOTATIONS = Arrays.asList(
-            RequiresPermission.class,
+            RequestPermission.class,
             OnPermissionDenied.class,
             OnShowRationale.class
     );
@@ -78,8 +78,8 @@ public class PermissionProcessor extends AbstractProcessor {
     private Map<TypeElement, PermissionSet> findAndParseTargets(RoundEnvironment env) {
         Map<TypeElement, PermissionSet.Builder> builderMap = new LinkedHashMap<>();
 
-        // Process @RequiresPermission element.
-        for (Element element : env.getElementsAnnotatedWith(RequiresPermission.class)) {
+        // Process @RequestPermission element.
+        for (Element element : env.getElementsAnnotatedWith(RequestPermission.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parsePermission(element, builderMap);
@@ -87,7 +87,7 @@ public class PermissionProcessor extends AbstractProcessor {
                 StringWriter stackTrace = new StringWriter();
                 e.printStackTrace(new PrintWriter(stackTrace));
                 error(element, "Unable to generate permission helper for @%s.\n\n%s",
-                        RequiresPermission.class.getSimpleName(), stackTrace.toString());
+                        RequestPermission.class.getSimpleName(), stackTrace.toString());
             }
         }
 
@@ -131,9 +131,9 @@ public class PermissionProcessor extends AbstractProcessor {
             Element element, Map<TypeElement, PermissionSet.Builder> builderMap) throws Exception {
         TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
         // Verify that the method and its containing class are accessible via generated code.
-        if (isMethodSignatureInvalid(element, enclosingElement, RequiresPermission.class)
-                || isAccessibleInvalid(element, enclosingElement, RequiresPermission.class)
-                || isPackageInvalid(element, enclosingElement, RequiresPermission.class)
+        if (isMethodSignatureInvalid(element, enclosingElement, RequestPermission.class)
+                || isAccessibleInvalid(element, enclosingElement, RequestPermission.class)
+                || isPackageInvalid(element, enclosingElement, RequestPermission.class)
                 || ((ExecutableElement) element).getParameters().size() != 0) {
             // TODO: Add multi parameters support. now method must have no parameters.
             return;
@@ -141,14 +141,14 @@ public class PermissionProcessor extends AbstractProcessor {
         ExecutableElement executableElement = (ExecutableElement) element;
 
         // Assemble information on the method.
-        Annotation annotation = element.getAnnotation(RequiresPermission.class);
-        Method annotationValue = RequiresPermission.class.getDeclaredMethod("value");
+        Annotation annotation = element.getAnnotation(RequestPermission.class);
+        Method annotationValue = RequestPermission.class.getDeclaredMethod("value");
         if (annotationValue.getReturnType() != String[].class) {
-            throw new IllegalStateException("@RequiresPermission annotation value() type not String[].");
+            throw new IllegalStateException("@RequestPermission annotation value() type not String[].");
         }
-        Method annotationRequestCode = RequiresPermission.class.getDeclaredMethod("requestCode");
+        Method annotationRequestCode = RequestPermission.class.getDeclaredMethod("requestCode");
         if (annotationRequestCode.getReturnType() != int.class) {
-            throw new IllegalStateException("@RequiresPermission annotation requestCode() type not int.");
+            throw new IllegalStateException("@RequestPermission annotation requestCode() type not int.");
         }
 
         String[] permissions = (String[]) annotationValue.invoke(annotation);
