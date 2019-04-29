@@ -6,6 +6,7 @@
     <string name="recycler_tv_hint_title">Title</string>
     <string name="recycler_tv_hint_content">Content</string>
     <string name="permission_btn_take_photo">Take Photo</string>
+    <string name="permission_btn_get_location">Get Location</string>
     <string name="permission_rationale_msg">We need some permissions to continue:</string>
     <string name="permission_rationale_proceed">Proceed</string>
     <string name="permission_rationale_cancel">Cancel</string>

@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.jacobvv.androidsamples.R;
+import org.jacobvv.androidsamples.permission.sample.CommonActivity;
+import org.jacobvv.androidsamples.permission.sample.MultiActivity;
+import org.jacobvv.androidsamples.permission.sample.SimpleActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.permission;
+package org.jacobvv.androidsamples.permission.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class PermissionSampleUtils {
 
-    static <T extends Context> AlertDialog getRationaleDialog(
+    public static <T extends Context> AlertDialog getRationaleDialog(
             final T target, final PermissionRequest<T> request, List<String> permissions, String title) {
         StringBuilder msgBuilder = new StringBuilder(target.getString(R.string.permission_rationale_msg));
         for (String permission : permissions) {

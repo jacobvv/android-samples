@@ -14,7 +14,7 @@ import org.jacobvv.androidsamples.R;
 import org.jacobvv.androidsamples.recycler.cursor.CursorActivity;
 import org.jacobvv.androidsamples.recycler.multi.MultiTypeActivity;
 import org.jacobvv.androidsamples.recycler.single.SingleTypeActivity;
-import org.jacobvv.androidsamples.utils.PermissionUtils;
+import org.jacobvv.androidsamples.util.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.List;

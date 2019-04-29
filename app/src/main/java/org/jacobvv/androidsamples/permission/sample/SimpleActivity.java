@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.permission;
+package org.jacobvv.androidsamples.permission.sample;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import java.util.List;
 public class SimpleActivity extends AppCompatActivity {
 
     private BaseArrayAdapter<Object> adapter;
+    private RecyclerView recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class SimpleActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recycler = findViewById(R.id.rv_log);
+        recycler = findViewById(R.id.rv_log);
         adapter = LogAdapterFactory.create();
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -44,11 +45,13 @@ public class SimpleActivity extends AppCompatActivity {
     @RequestPermission({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void takePhoto() {
         adapter.add(0, new GrantedLog());
+        recycler.scrollToPosition(0);
     }
 
     @OnPermissionDenied()
     void onTakePhotoDenied(List<String> denied, List<String> deniedForever) {
         adapter.add(0, new DeniedLog(denied, deniedForever));
+        recycler.scrollToPosition(0);
     }
 
     @Override

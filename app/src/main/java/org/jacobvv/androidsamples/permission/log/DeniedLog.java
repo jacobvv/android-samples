@@ -14,10 +14,17 @@ import java.util.List;
  * @date 19-4-28
  */
 public class DeniedLog {
+    String name;
     List<String> denied;
     List<String> deniedForever;
 
     public DeniedLog(List<String> denied, List<String> deniedForever) {
+        this.denied = denied;
+        this.deniedForever = deniedForever;
+    }
+
+    public DeniedLog(String name, List<String> denied, List<String> deniedForever) {
+        this.name = name;
         this.denied = denied;
         this.deniedForever = deniedForever;
     }
@@ -31,6 +38,11 @@ public class DeniedLog {
 
         @Override
         public void onBindViewHolder(@NonNull BaseViewHolder<DeniedLog> holder, DeniedLog model, int position) {
+            if (model.name != null && !model.name.isEmpty()) {
+                String title = model.name + ": Denied.";
+                TextView titleView = holder.getView(R.id.tv_item_title);
+                titleView.setText(title);
+            }
             TextView denied = holder.getView(R.id.tv_item_denied);
             TextView deniedForever = holder.getView(R.id.tv_item_denied_forever);
             StringBuilder builder = new StringBuilder();

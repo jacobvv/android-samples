@@ -1,4 +1,4 @@
-package org.jacobvv.androidsamples.utils;
+package org.jacobvv.androidsamples.util;
 
 import android.app.Activity;
 import android.content.Context;

@@ -25,7 +25,7 @@ public class AbstractType extends ItemType<Abstract, BaseViewHolder<Abstract>> {
                                  Abstract model, int position) {
         ImageView img = holder.getView(R.id.iv_item_image);
         TextView title = holder.getView(R.id.tv_item_title);
-        TextView content = holder.getView(R.id.tv_item_content);
+        TextView content = holder.getView(R.id.tv_item_title);
         img.setImageResource(model.image);
         title.setText(model.title);
         content.setText(model.content);
