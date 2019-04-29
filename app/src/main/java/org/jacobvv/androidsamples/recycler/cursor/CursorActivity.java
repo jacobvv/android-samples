@@ -1,10 +1,12 @@
 package org.jacobvv.androidsamples.recycler.cursor;
 
+import android.Manifest;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,8 +25,11 @@ import org.jacobvv.baserecycler.BaseRecyclerAdapter;
 import org.jacobvv.baserecycler.BaseViewHolder;
 import org.jacobvv.baserecycler.listener.OnItemClickListener;
 import org.jacobvv.baserecycler.listener.OnViewClickListener;
+import org.jacobvv.permission.annotation.RequestPermission;
 
 public class CursorActivity extends AppCompatActivity {
+
+    private ImageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +61,17 @@ public class CursorActivity extends AppCompatActivity {
         });
 
         RecyclerView recycler = findViewById(R.id.rv_list);
-        final ImageAdapter adapter = new ImageAdapter();
+        adapter = new ImageAdapter();
         adapter.register(Camera.class, cameraType);
         adapter.register(Image.class, imageType);
         recycler.setLayoutManager(new GridLayoutManager(this, 4));
         recycler.addItemDecoration(new ImageItemDecoration());
         recycler.setAdapter(adapter);
+        CursorActivity_PermissionHelper.init_WithCheck(this);
+    }
 
+    @RequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void init() {
         new MediaRepository(this).loadMedia(new MediaRepository.MediaCallbacks() {
             @Override
             public void onMediaLoaded(Cursor cursor) {
@@ -73,7 +82,6 @@ public class CursorActivity extends AppCompatActivity {
 
             @Override
             public void onMediaReset() {
-
             }
         });
     }
@@ -85,4 +93,9 @@ public class CursorActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        CursorActivity_PermissionHelper.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
 }
