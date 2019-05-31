@@ -32,8 +32,6 @@ public class MultiTypeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_activity_multi_type);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         AbstractType abstractType = new AbstractType();
         BannerType bannerType = new BannerType();

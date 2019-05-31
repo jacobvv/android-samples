@@ -27,8 +27,6 @@ public class SingleTypeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_activity_single_type);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         SingleType type = new SingleType();
         type.setOnItemClickListener(new OnItemClickListener<SingleModel>() {
