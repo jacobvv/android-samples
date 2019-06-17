@@ -44,6 +44,10 @@ public abstract class ItemType<T, VH extends BaseViewHolder<T>> {
 
     public abstract int getLayoutId(int type);
 
+    public int getSpanSize() {
+        return 1;
+    }
+
     @NonNull
     @SuppressWarnings("unchecked")
     public VH onCreateViewHolder(@NonNull View view,

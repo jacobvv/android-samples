@@ -10,6 +10,7 @@ import org.jacobvv.baserecycler.BaseViewHolder;
  * @date 19-4-18
  */
 public interface OnViewLongClickListener<T> {
+
     /**
      * Called when a view has been clicked.
      *
