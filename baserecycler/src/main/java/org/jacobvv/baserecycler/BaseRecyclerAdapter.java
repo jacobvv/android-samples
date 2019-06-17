@@ -79,4 +79,16 @@ public abstract class BaseRecyclerAdapter<T>
 
     public abstract void clear();
 
+    public abstract boolean isFirstItem(int position);
+
+    public abstract boolean isLastItem(int position);
+
+    public abstract boolean atFirstRow(int position, int spanCount);
+
+    public abstract boolean atLastRow(int position, int spanCount);
+
+    public abstract boolean atFirstColumn(int position, int spanCount);
+
+    public abstract boolean atLastColumn(int position, int spanCount);
+
 }

@@ -101,4 +101,45 @@ public class BaseArrayAdapter<T> extends BaseRecyclerAdapter<T> {
         mData.clear();
         notifyDataSetChanged();
     }
+
+    @Override
+    public boolean isFirstItem(int position) {
+        return position == 0;
+    }
+
+    @Override
+    public boolean isLastItem(int position) {
+        return position == mData.size() - 1;
+    }
+
+    @Override
+    public boolean atFirstRow(int position, int spanCount) {
+        if (isFirstItem(position)) {
+            return true;
+        }
+        for (int pos = 0; pos <= position; pos++) {
+            spanCount -= getItemType(pos).getSpanSize();
+            if (spanCount < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean atLastRow(int position, int spanCount) {
+        // TODO: Not completed yet.
+        return false;
+    }
+
+    @Override
+    public boolean atFirstColumn(int position, int spanCount) {
+        return false;
+    }
+
+    @Override
+    public boolean atLastColumn(int position, int spanCount) {
+        return false;
+    }
+
 }

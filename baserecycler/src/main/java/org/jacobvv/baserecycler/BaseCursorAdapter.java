@@ -172,6 +172,37 @@ public abstract class BaseCursorAdapter<T> extends BaseRecyclerAdapter<T> {
         mCursor = null;
     }
 
+    @Override
+    public boolean isFirstItem(int position) {
+        // TODO: Not completed yet.
+        return false;
+    }
+
+    @Override
+    public boolean isLastItem(int position) {
+        return false;
+    }
+
+    @Override
+    public boolean atFirstRow(int position, int spanCount) {
+        return false;
+    }
+
+    @Override
+    public boolean atLastRow(int position, int spanCount) {
+        return false;
+    }
+
+    @Override
+    public boolean atFirstColumn(int position, int spanCount) {
+        return false;
+    }
+
+    @Override
+    public boolean atLastColumn(int position, int spanCount) {
+        return false;
+    }
+
     private boolean isInCursor(int pos) {
         return mData.get(pos) == null;
     }
