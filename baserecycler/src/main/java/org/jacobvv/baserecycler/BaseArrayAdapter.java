@@ -128,8 +128,37 @@ public class BaseArrayAdapter<T> extends BaseRecyclerAdapter<T> {
 
     @Override
     public boolean atLastRow(int position, int spanCount) {
-        // TODO: Not completed yet.
-        return false;
+        if (isLastItem(position)) {
+            return true;
+        }
+        int span = spanCount;
+        int size = mData.size();
+        for (int pos = mData.size() - 1; pos >= position; pos--) {
+            span -= getItemType(pos).getSpanSize();
+            if (span < 0) {
+                return false;
+            }
+        }
+        if (isFirstItem(position)) {
+            return true;
+        }
+        int spanTotal = 0;
+        for (int pos = position - 1; pos >= 0; pos--) {
+            span = getItemType(pos).getSpanSize();
+            if (span == spanCount) {
+                break;
+            }
+            spanTotal += span;
+        }
+        spanTotal = spanTotal % spanCount;
+        for (int pos = position; pos < size; pos++) {
+            span = getItemType(pos).getSpanSize();
+            spanTotal += span;
+            if (spanTotal > spanCount) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
