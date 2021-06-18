@@ -31,11 +31,12 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.RawRes;
-import android.support.annotation.WorkerThread;
-import android.support.media.ExifInterface;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.RawRes;
+import androidx.annotation.WorkerThread;
+import androidx.exifinterface.media.ExifInterface;
+
 import android.util.Log;
 import android.view.View;
 

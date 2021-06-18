@@ -1,7 +1,7 @@
 package org.jacobvv.databus;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * @author jacob

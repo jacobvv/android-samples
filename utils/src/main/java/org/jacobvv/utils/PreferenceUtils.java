@@ -2,7 +2,7 @@ package org.jacobvv.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 
 import java.util.Map;
 

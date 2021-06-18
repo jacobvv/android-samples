@@ -1,6 +1,6 @@
 package org.jacobvv.androidsamples.permission.log;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.TextView;
 
 import org.jacobvv.androidsamples.R;

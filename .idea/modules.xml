@@ -2,14 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/android-samples.iml" filepath="$PROJECT_DIR$/android-samples.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/baserecycler/baserecycler.iml" filepath="$PROJECT_DIR$/baserecycler/baserecycler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/databus/databus.iml" filepath="$PROJECT_DIR$/databus/databus.iml" />
-      <module fileurl="file://$PROJECT_DIR$/permission-annotaion/permission-annotaion.iml" filepath="$PROJECT_DIR$/permission-annotaion/permission-annotaion.iml" />
-      <module fileurl="file://$PROJECT_DIR$/permission-api/permission-api.iml" filepath="$PROJECT_DIR$/permission-api/permission-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/permission-compiler/permission-compiler.iml" filepath="$PROJECT_DIR$/permission-compiler/permission-compiler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/android-samples.iml" filepath="$PROJECT_DIR$/.idea/android-samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-samples.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-samples.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/baserecycler/android-samples.baserecycler.iml" filepath="$PROJECT_DIR$/.idea/modules/baserecycler/android-samples.baserecycler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/android-samples.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/android-samples.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/databus/android-samples.databus.iml" filepath="$PROJECT_DIR$/.idea/modules/databus/android-samples.databus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/permission-annotaion/android-samples.permission-annotaion.iml" filepath="$PROJECT_DIR$/.idea/modules/permission-annotaion/android-samples.permission-annotaion.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/permission-api/android-samples.permission-api.iml" filepath="$PROJECT_DIR$/.idea/modules/permission-api/android-samples.permission-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/permission-compiler/android-samples.permission-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/permission-compiler/android-samples.permission-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/utils/android-samples.utils.iml" filepath="$PROJECT_DIR$/.idea/modules/utils/android-samples.utils.iml" />
     </modules>
   </component>
 </project>

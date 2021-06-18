@@ -1,6 +1,6 @@
 package org.jacobvv.androidsamples.recycler.multi.type;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.ImageView;
 
 import org.jacobvv.androidsamples.R;

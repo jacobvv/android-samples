@@ -1,6 +1,6 @@
 package org.jacobvv.androidsamples.recycler.single;
 
-import android.support.annotation.IdRes;
+import androidx.annotation.IdRes;
 
 import org.jacobvv.androidsamples.Constants;
 

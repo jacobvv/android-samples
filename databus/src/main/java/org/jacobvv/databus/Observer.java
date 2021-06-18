@@ -1,7 +1,7 @@
 package org.jacobvv.databus;
 
-import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
+import androidx.annotation.MainThread;
+import androidx.annotation.Nullable;
 
 /**
  * @author jacob

@@ -3,7 +3,7 @@ package org.jacobvv.androidsamples.recycler.cursor.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
+import androidx.loader.content.CursorLoader;
 
 import java.util.ArrayList;
 import java.util.List;

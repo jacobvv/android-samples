@@ -1,6 +1,6 @@
 package org.jacobvv.androidsamples.recycler.cursor.type;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.jacobvv.androidsamples.R;
 import org.jacobvv.androidsamples.recycler.cursor.model.Camera;

@@ -1,7 +1,7 @@
 package org.jacobvv.utils;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 import android.text.TextUtils;
 import android.util.Log;
 

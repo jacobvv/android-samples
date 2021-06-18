@@ -3,8 +3,8 @@ package org.jacobvv.databus;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import android.util.SparseArray;
 
 import java.util.LinkedList;

@@ -7,8 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
-import android.support.annotation.IntDef;
-import android.support.annotation.RequiresPermission;
+import androidx.annotation.IntDef;
+import androidx.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 
 import java.lang.annotation.ElementType;
