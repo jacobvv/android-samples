@@ -2,6 +2,15 @@ plugins {
     id 'java-library'
 }
 
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc5'
+    implementation 'com.squareup:javapoet:1.10.0'
+
+    implementation project(path: ':di-annotation')
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8

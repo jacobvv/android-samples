@@ -27,5 +27,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':common')
 
-    api project(path: ':permission-annotaion')
+    api project(path: ':permission-annotation')
 }

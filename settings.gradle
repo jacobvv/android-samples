@@ -1,4 +1,4 @@
-include ':app', ':databus', ':baserecycler', ':utils', ':permission-compiler', ':permission-annotaion', ':permission-api'
+include ':app', ':databus', ':baserecycler', ':utils', ':permission-compiler', ':permission-annotation', ':permission-api'
 include ':common'
 include ':di-api'
 include ':di-annotation'
