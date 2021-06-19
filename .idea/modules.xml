@@ -7,6 +7,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/baserecycler/android-samples.baserecycler.iml" filepath="$PROJECT_DIR$/.idea/modules/baserecycler/android-samples.baserecycler.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/android-samples.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/android-samples.common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/databus/android-samples.databus.iml" filepath="$PROJECT_DIR$/.idea/modules/databus/android-samples.databus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/di-annotation/android-samples.di-annotation.iml" filepath="$PROJECT_DIR$/.idea/modules/di-annotation/android-samples.di-annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/di-api/android-samples.di-api.iml" filepath="$PROJECT_DIR$/.idea/modules/di-api/android-samples.di-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/di-compiler/android-samples.di-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/di-compiler/android-samples.di-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/permission-annotaion/android-samples.permission-annotaion.iml" filepath="$PROJECT_DIR$/.idea/modules/permission-annotaion/android-samples.permission-annotaion.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/permission-api/android-samples.permission-api.iml" filepath="$PROJECT_DIR$/.idea/modules/permission-api/android-samples.permission-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/permission-compiler/android-samples.permission-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/permission-compiler/android-samples.permission-compiler.iml" />

@@ -25,6 +25,7 @@
       <module name="android-samples.baserecycler" target="11" />
       <module name="android-samples.common" target="11" />
       <module name="android-samples.databus" target="11" />
+      <module name="android-samples.di-api" target="11" />
       <module name="android-samples.permission-api" target="11" />
       <module name="android-samples.utils" target="11" />
     </bytecodeTargetLevel>

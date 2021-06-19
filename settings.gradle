@@ -1,2 +1,5 @@
 include ':app', ':databus', ':baserecycler', ':utils', ':permission-compiler', ':permission-annotaion', ':permission-api'
 include ':common'
+include ':di-api'
+include ':di-annotation'
+include ':di-compiler'
